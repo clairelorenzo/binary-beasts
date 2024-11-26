@@ -15,6 +15,8 @@ import { z } from "zod";
 class Routes {
   // Synchronize the concepts from `app.ts`.
 
+  //////////////////////////////////// sessioning ////////////////////////////////////
+
   @Router.get("/session")
   async getSessionUser(session: SessionDoc) {
     const user = Sessioning.getUser(session);
@@ -70,6 +72,8 @@ class Routes {
     return { msg: "Logged out!" };
   }
 
+  //////////////////////////////////// posting ////////////////////////////////////
+
   @Router.get("/posts")
   @Router.validate(z.object({ author: z.string().optional() }))
   async getPosts(author?: string) {
@@ -84,18 +88,18 @@ class Routes {
   }
 
   @Router.post("/posts")
-  async createPost(session: SessionDoc, content: string, options?: PostOptions) {
+  async createPost(session: SessionDoc, content: string, subject: string, picture?: string, options?: PostOptions) {
     const user = Sessioning.getUser(session);
-    const created = await Posting.create(user, content, options);
+    const created = await Posting.create(user, content, subject, picture, options);
     return { msg: created.msg, post: await Responses.post(created.post) };
   }
 
   @Router.patch("/posts/:id")
-  async updatePost(session: SessionDoc, id: string, content?: string, options?: PostOptions) {
+  async updatePost(session: SessionDoc, id: string, subject?: string, content?: string, picture?: string, options?: PostOptions) {
     const user = Sessioning.getUser(session);
     const oid = new ObjectId(id);
     await Posting.assertAuthorIsUser(oid, user);
-    return await Posting.update(oid, content, options);
+    return await Posting.update(oid, subject, content, picture, options);
   }
 
   @Router.delete("/posts/:id")
@@ -105,6 +109,8 @@ class Routes {
     await Posting.assertAuthorIsUser(oid, user);
     return Posting.delete(oid);
   }
+
+  //////////////////////////////////// friending ////////////////////////////////////
 
   @Router.get("/friends")
   async getFriends(session: SessionDoc) {
