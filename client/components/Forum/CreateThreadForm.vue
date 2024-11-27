@@ -36,8 +36,10 @@ const emptyForm = () => {
     <textarea id="subject" v-model="subject" placeholder="Name a post!" required> </textarea>
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-    <button v-on:click="cancel()">Cancel</button>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+    <div class="row button-area">
+      <button class="button-error btn-small pure-button" v-on:click="cancel()">Cancel</button>
+      <button type="submit" class="pure-button-primary btn-small pure-button">Create Post</button>
+    </div>
   </form>
 </template>
 
@@ -58,5 +60,9 @@ textarea {
   padding: 0.5em;
   border-radius: 4px;
   resize: none;
+}
+
+.button-area > * {
+  margin-right: 1vw;
 }
 </style>

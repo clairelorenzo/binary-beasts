@@ -2,11 +2,10 @@
 import { formatDate } from "@/utils/formatDate";
 
 const props = defineProps(["post"]);
-const emit = defineEmits(["editPost", "refreshPosts"]);
+const emit = defineEmits(["editPost"]);
 </script>
 
 <template>
-  <p class="author">{{ props.post.author }}</p>
   <p class="subject">{{ props.post.subject }}</p>
   <div class="base">
     <article class="timestamp">
@@ -19,11 +18,6 @@ const emit = defineEmits(["editPost", "refreshPosts"]);
 <style scoped>
 p {
   margin: 0em;
-}
-
-.author {
-  font-weight: bold;
-  font-size: 1.2em;
 }
 
 .subject {

@@ -19,8 +19,13 @@ const deletePost = async () => {
 </script>
 
 <template>
-  <p class="author">{{ props.post.author }}</p>
   <p class="subject">{{ props.post.subject }}</p>
+  <hr />
+  <div class="row">
+    <p class="author">{{ props.post.author }}</p>
+      <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
+      <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
+  </div>
   <p>{{ props.post.content }}</p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
@@ -28,8 +33,6 @@ const deletePost = async () => {
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
     <article class="timestamp">
-      <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-      <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
     </article>
   </div>
 </template>
@@ -39,6 +42,12 @@ p {
   margin: 0em;
 }
 
+hr {
+  stroke: black;
+  width: 100%;
+  margin: 0;
+}
+
 .author {
   font-weight: bold;
   font-size: 1.2em;
@@ -46,7 +55,7 @@ p {
 
 .subject {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 2em;
 }
 
 menu {
@@ -73,5 +82,12 @@ menu {
 
 .base article:only-child {
   margin-left: auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 </style>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import CreateThreadForm from "./CreateThreadForm.vue";
-import EditThreadForm from "./EditThreadForm.vue";
-import ThreadShortComponent from "./ThreadShortComponent.vue";
-import ThreadComponent from "./ThreadComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
+import CreateThreadForm from "./CreateThreadForm.vue";
+import EditThreadForm from "./EditThreadForm.vue";
 import SearchThreadForm from "./SearchThreadForm.vue";
+import ThreadComponent from "./ThreadComponent.vue";
+import ThreadShortComponent from "./ThreadShortComponent.vue";
 
 const { isLoggedIn } = storeToRefs(useUserStore());
 
@@ -28,6 +28,10 @@ async function getPosts(author?: string) {
   }
   searchAuthor.value = author ? author : "";
   posts.value = postResults;
+}
+
+async function fullRefresh(author?:string) {
+  getPosts(author)
   singlePost.value = undefined;
 }
 
@@ -45,20 +49,19 @@ onBeforeMount(async () => {
   <div class="row">
     <h2 v-if="!searchAuthor">Posts:</h2>
     <h2 v-else>Posts by {{ searchAuthor }}:</h2>
-    <SearchThreadForm @getPostsByAuthor="getPosts" />
+    <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
     <section class="postList">
-      <button v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
+      <button class="pure-button-primary pure-button" v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
       <article v-for="post in posts" :key="post._id" v-on:click="()=>singlePost=post">
-        <ThreadShortComponent :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
+        <ThreadShortComponent :post="post" @editPost="updateEditing" />
       </article>
     </section>
     <article class="singlePost">
-      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing"/>
+      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing" :post="singlePost" @refreshPosts="fullRefresh" @editPost="updateEditing"/>
       <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="()=>creating=false"/>
       <EditThreadForm v-else-if="editing" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
-
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>
@@ -75,8 +78,7 @@ section {
 section,
 p,
 .row {
-  margin: 0 auto;
-  max-width: 60em;
+  margin: 0 1em;
 }
 
 article {
@@ -89,26 +91,27 @@ article {
 }
 
 .posts {
-  padding: 1em;
+  margin: 0 1em;
   flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
+  justify-content: space-between;
+  height: 70vh;
 }
 
 .postList {
   flex-direction: column;
   width: 25%;
+  flex-shrink: 0;
   margin: 0;
+  overflow-y: auto;
 }
 
 .singlePost {
   flex-grow: 1;
+  padding: 1em;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  margin: 0 auto;
-  max-width: 60em;
 }
 </style>
