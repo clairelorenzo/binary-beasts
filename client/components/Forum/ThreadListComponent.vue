@@ -14,7 +14,7 @@ const { isLoggedIn } = storeToRefs(useUserStore());
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
 let singlePost = ref<Record<string, string>|undefined>(undefined);
-let editing = ref("");
+let editing = ref(false);
 let searchAuthor = ref("");
 let creating = ref(false);
 
@@ -31,8 +31,8 @@ async function getPosts(author?: string) {
   singlePost.value = undefined;
 }
 
-function updateEditing(id: string) {
-  editing.value = id;
+function updateEditing() {
+  editing.value = !editing.value;
 }
 
 onBeforeMount(async () => {
@@ -55,8 +55,10 @@ onBeforeMount(async () => {
       </article>
     </section>
     <article class="singlePost">
-      <ThreadComponent v-if="singlePost !== undefined && !creating" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing"/>
+      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing"/>
       <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="()=>creating=false"/>
+      <EditThreadForm v-else-if="editing" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
+
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>
