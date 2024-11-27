@@ -6,10 +6,16 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 import SettingView from "../views/SettingView.vue";
+import ThreadView from "../views/ThreadView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: "/threads",
+      name: "Threads",
+      component: ThreadView,
+    },
     {
       path: "/",
       name: "Home",
