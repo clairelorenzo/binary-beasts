@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import CreateTaskForm from "../components/Tracker/CreateTaskForm.vue";
+import TaskListComponent from "../components/Tracker/TaskListComponent.vue";
+
+const taskListRef = ref();
+
+const refreshTasks = () => {
+  if (taskListRef.value) {
+    taskListRef.value.fetchTasks();
+  }
+};
+</script>
+
+<template>
+  <div class="tracker-view">
+    <h1>Task Tracker</h1>
+    <CreateTaskForm @refreshTasks="refreshTasks" />
+    <TaskListComponent ref="taskListRef" />
+  </div>
+</template>
+
+<style scoped>
+.tracker-view {
+  padding: 1em;
+}
+</style>
