@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 import SettingView from "../views/SettingView.vue";
 import ThreadView from "../views/ThreadView.vue";
+import TrackerView from "../views/TrackerView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: "/",
       name: "Threads",
       component: ThreadView,
+    },
+    {
+      path: "/tracker",
+      name: "Tracker",
+      component: TrackerView,
     },
     {
       path: "/setting",

@@ -27,15 +27,19 @@ onBeforeMount(async () => {
       <div class="title">
         <img src="@/assets/images/logo.svg" />
         <RouterLink :to="{ name: 'Threads' }">
-          <h1>Social Media App</h1>
+          <h1>BeFit</h1>
         </RouterLink>
       </div>
       <ul>
         <li>
           <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }"> Threads </RouterLink>
         </li>
+        <li>
+          <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }"> Tracker </RouterLink>
+        </li>
         <li v-if="isLoggedIn">
           <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
+          
         </li>
         <li v-else>
           <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>

@@ -42,16 +42,16 @@ defineExpose({ fetchTasks });
             <input
             type="checkbox"
             :checked=true if task.completed="true" else false
+            class="completion-checkbox"
         />
         
         </div>
         
-        <h3> Description: {{task.description}}</h3>
-        <h3> Num Reps: {{task.reps}}</h3>
-        <h3> Num Sets: {{task.sets}}</h3>
-        <h3>Weight: {{task.weight}}</h3>
-        <h3> Difficulty : {{task.previousDifficulty}}</h3>
-
+        <p class="task-detail">Description: {{ task.description }}</p>
+        <p class="task-detail">Reps: {{ task.reps }}</p>
+        <p class="task-detail">Sets: {{ task.sets }}</p>
+        <p class="task-detail">Weight: {{ task.weight }}</p>
+        <p class="task-detail">Difficulty: {{ task.previousDifficulty }}</p>
       </li>
     </ul>
   </div>
@@ -67,7 +67,6 @@ defineExpose({ fetchTasks });
 .task-item {
   margin-bottom: 0.5em;
   padding: 0.5em;
-  border: 1px solid #ccc;
   border-radius: 0.5em;
   background-color: var(--secondary-bg);
   font-size: 0.9rem;
