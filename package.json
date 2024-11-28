@@ -46,6 +46,7 @@
     "vue-tsc": "^2.1.6"
   },
   "dependencies": {
+    "chart.js": "^4.4.6",
     "connect-mongo": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -59,6 +60,7 @@
     "purecss": "^3.0.0",
     "reflect-metadata": "^0.1.13",
     "vue": "^3.5.9",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.4.5",
     "zod": "^3.23.8"
   },

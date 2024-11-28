@@ -55,7 +55,7 @@ export default class TrackingConcept {
     }
   }
 
-  async updateTask(user: ObjectId, taskName: string, reps?: number, sets?: number, weight?: number) {
+  async updateTask(user: ObjectId, taskName: string, reps?: number, sets?: number, weight?: number, difficulty?: Difficulty) {
     const trackingDoc = await this.getTrackingDoc(user);
     const task = trackingDoc.weeklyTasks.find((task) => task.name === taskName);
     if (!task) {
@@ -65,6 +65,7 @@ export default class TrackingConcept {
     if (reps !== undefined) task.reps = reps;
     if (sets !== undefined) task.sets = sets;
     if (weight !== undefined) task.weight = weight;
+    if (difficulty !== undefined) task.previousDifficulty = difficulty;
 
     await this.tracking.partialUpdateOne({ user }, { weeklyTasks: trackingDoc.weeklyTasks });
     return { msg: "Task successfully updated!", task };

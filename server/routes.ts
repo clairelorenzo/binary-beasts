@@ -186,9 +186,9 @@ class Routes {
   }
 
   @Router.patch("/tracking/tasks/:taskName")
-  async updateTask(session: SessionDoc, taskName: string, reps?: number, sets?: number, weight?: number) {
+  async updateTask(session: SessionDoc, taskName: string, reps?: number, sets?: number, weight?: number, difficulty?: Difficulty) {
     const user = Sessioning.getUser(session);
-    const result = await Tracking.updateTask(user, taskName, reps, sets, weight);
+    const result = await Tracking.updateTask(user, taskName, reps, sets, weight, difficulty);
     return { msg: "Task updated successfully!", task: result.task };
   }
 
