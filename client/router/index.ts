@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
 import LoginView from "../views/LoginView.vue";
+import MessagingView from "../views/MessagingView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 import SettingView from "../views/SettingView.vue";
 import ThreadView from "../views/ThreadView.vue";
@@ -25,6 +26,12 @@ const router = createRouter({
       path: "/setting",
       name: "Settings",
       component: SettingView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/messages",
+      name: "Messages",
+      component: MessagingView,
       meta: { requiresAuth: true },
     },
     {
