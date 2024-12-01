@@ -40,29 +40,35 @@ const test = ref<Array<number>>([1,2,3]);
     data() {
       return {
         chartData: {
-          labels: yVals.value,
-          datasets: [ { data: test.value } ]
+          labels: xVals.value,
+          datasets: [ 
+            { data: yVals.value,
+                backgroundColor: "rgba(203, 220, 245, 1)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            label: "Num Tasks Completed"
+         } ]
         },
         chartOptions: {
-          responsive: true
+          responsive: true,
+          plugins:{
+            title:{
+                display: true,
+                text: "Number of Tasks Completed per Day",
+                font: {
+                    size: 20
+                }
+            }
+          }
         }
       }
     }
   }
-
-  const chartOptions = {
-    responsive: true
-  };
-  const chartData = {
-          labels: yVals.value,
-          datasets: [ { data: test.value } ]
-        };
   </script>
 
 <template>
     <Bar
       id="tracking-chart"
-      :options="chartOptions"
+      :options="Data.data().chartOptions"
       :data="Data.data().chartData"
     />
   </template>

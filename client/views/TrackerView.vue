@@ -5,6 +5,7 @@ import CreateTaskForm from "../components/Tracker/CreateTaskForm.vue";
 import CompletionPercentageComponent from "../components/Tracker/PercentComponent.vue";
 import ResetTasksComponent from "../components/Tracker/ResetTasksComponent.vue";
 import TaskListComponent from "../components/Tracker/TaskListComponent.vue";
+import TrackingGraphComponent from "../components/Tracker/TrackingGraphComponent.vue";
 const taskListRef = ref();
 
 const refreshTasks = () => {
@@ -22,7 +23,7 @@ const refreshTasks = () => {
     <CreateGoalComponent /> <!-- Add the CreateGoalComponent here -->
     <ResetTasksComponent />
     <TaskListComponent ref="taskListRef" />
-    <!-- <TrackingGraphComponent></TrackingGraphComponent> -->
+    <TrackingGraphComponent></TrackingGraphComponent>
   </div>
 </template>
 
