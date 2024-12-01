@@ -2,7 +2,8 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Authing, Friending, Posting, Sessioning, Tracking } from "./app";
+import { Authing, Commenting, Friending, Posting, Sessioning, Tracking } from "./app";
+import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
 import { SessionDoc } from "./concepts/sessioning";
 import { Difficulty } from "./concepts/tracking";
@@ -246,6 +247,41 @@ class Routes {
     const userObjectId = new ObjectId(userId);
     const result = await Tracking.createTrackingDoc(userObjectId);
     return { msg: "Tracking profile created successfully!", trackingProfile: result };
+  }
+
+  @Router.get("/comments")
+  @Router.validate(z.object({ postId: z.string().optional() }))
+  async getComments(postId: string) {
+    console.log(postId);
+    const postObjectId = new ObjectId(postId);
+    console.log(postObjectId);
+    const comments = await Commenting.getCommentsForPost(postObjectId);
+    console.log("Comments from DB:", comments);
+    return Responses.comments(comments);
+  }
+  @Router.post("/comments")
+  async createComment(session: SessionDoc, postId: string, content: string, options?: CommentOptions) {
+    const user = Sessioning.getUser(session);
+    const postObjectId = new ObjectId(postId);
+    const created = await Commenting.create(postObjectId, user, content, options);
+    return { msg: created.msg, comment: await Responses.comment(created.comment) };
+  }
+
+  @Router.patch("/comments/:id")
+  @Router.validate(z.object({ id: z.string(), content: z.string().optional() }))
+  async updateComment(session: SessionDoc, id: string, content?: string, options?: CommentOptions) {
+    const user = Sessioning.getUser(session);
+    const commentObjectId = new ObjectId(id);
+    await Commenting.assertAuthorIsUser(commentObjectId, user);
+    return await Commenting.update(commentObjectId, content, options);
+  }
+
+  @Router.delete("/comments/:id")
+  async deleteComment(session: SessionDoc, id: string) {
+    const user = Sessioning.getUser(session);
+    const commentObjectId = new ObjectId(id);
+    await Commenting.assertAuthorIsUser(commentObjectId, user);
+    return Commenting.delete(commentObjectId);
   }
 }
 
