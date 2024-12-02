@@ -128,12 +128,12 @@ const onSend = () => {
 }
 
 .button-group button:first-child {
-  background-color: #ff6f61;
+  background-color: #c4c1c1;
   color: white;
 }
 
 .button-group button:last-child {
-  background-color: #007bff;
+  background-color: #4f70a3;
   color: white;
 }
 

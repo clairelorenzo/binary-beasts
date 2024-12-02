@@ -83,18 +83,19 @@ onMounted(checkIfMine);
   flex-direction: column;
   max-width: 70%;
   margin: 0.5em;
-  transition: left 0.3s ease; /* Smooth transition */
+  transition: left 0.3s ease;
+  text-align: center;
 }
 
 .task-message.mine {
   position: relative;
   left: 22vw;
   align-self: flex-end;
-  text-align: right;
+  text-align: center;
 }
 
 .task-message.mine > .message-content {
-  background-color: #cbdde3;
+  background-color: #a8bfe1;
 }
 
 .task-message .message-content {
@@ -122,6 +123,17 @@ onMounted(checkIfMine);
   color: white;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.task-message .message-meta {
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 0.5em;
+  text-align: left; /* Default for non-mine messages */
+}
+
+.task-message.mine .message-meta {
+  text-align: right; /* Right-align for mine messages */
 }
 
 .add-task-section button:hover {

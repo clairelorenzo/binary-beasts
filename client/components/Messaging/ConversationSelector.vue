@@ -5,7 +5,7 @@
       v-model="recipientUsername"
       placeholder="Enter username"
     />
-    <button @click="startConversation">Start Conversation</button>
+    <button @click="startConversation">Start New Conversation</button>
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
@@ -33,7 +33,7 @@ const startConversation = async () => {
   try {
     // Fetch the recipient's user data
 
-    const userData = await fetchy(`/api/users/id/${recipientUsername.value}`, 'GET');
+    const userData = await fetchy(`/api/users/${recipientUsername.value}`, 'GET');
     
     if (!userData) {
       errorMessage.value = 'User not found.';
@@ -62,7 +62,7 @@ const startConversation = async () => {
 <style scoped>
 .conversation-selector {
   padding: 1em;
-  background-color: #e7eaee;
+  background-color: #e7e4e4;
   border: 1px solid #ccc;
   border-radius: 8px;
   display: flex;
@@ -73,20 +73,20 @@ const startConversation = async () => {
 .conversation-selector input {
   padding: 0.5em;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .conversation-selector button {
   padding: 0.5em;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color: #c4c1c1;
+  letter-spacing: 2px;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .conversation-selector button:hover {
-  background-color: #0056b3;
+  background-color: #72a1e8;
 }
 
 .error-message {

@@ -51,6 +51,11 @@ import { onMounted, ref } from 'vue';
     overflow: hidden;
   
   }
+
+  .starter{
+    position: relative;
+    bottom: 10vh;
+  }
   
   .conversation-container {
     display: flex;

@@ -23,15 +23,15 @@ const router = createRouter({
       component: TrackerView,
     },
     {
-      path: "/setting",
-      name: "Settings",
-      component: SettingView,
-      meta: { requiresAuth: true },
-    },
-    {
       path: "/messages",
       name: "Messages",
       component: MessagingView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/setting",
+      name: "Settings",
+      component: SettingView,
       meta: { requiresAuth: true },
     },
     {

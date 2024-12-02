@@ -45,7 +45,7 @@ const getLastMessagePreview = () => {
 
   if (messages && messages.length > 0) {
     const lastMessage = messages[messages.length - 1];
-    lastMessagePreview.value = lastMessage.content || "[No content]";
+    lastMessagePreview.value = lastMessage.content || "Task attachment";
   } else {
     lastMessagePreview.value = "[No messages yet]";
   }
@@ -62,5 +62,6 @@ onMounted(() => {
   padding: 1em;
   border-bottom: 1px solid #eee;
   cursor: pointer;
+  border-radius: 1px;
 }
 </style>

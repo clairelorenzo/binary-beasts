@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import PostMessage from './PostMessage.vue';
 import TaskMessage from './TaskMessage.vue';
 import TextMessage from './TextMessage.vue';
 
@@ -15,8 +14,6 @@ const props = defineProps<{ message: any }>();
 const messageComponent = computed(() => {
   if (props.message.task) {
     return TaskMessage;
-  } else if (props.message.associatedPost) {
-    return PostMessage;
   } else {
     return TextMessage;
   }

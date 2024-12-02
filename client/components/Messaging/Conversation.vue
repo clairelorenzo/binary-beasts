@@ -4,8 +4,11 @@
       <h2>Chat with {{ recipientName }}</h2>
     </div>
     <div ref="messageListContainer" class="message-list-container">
-      <MessageList :conversationId="conversationId" :reload="reloadMessages" />
-      <div ref="scrollAnchor"></div>
+      <MessageList
+        :conversationId="conversationId"
+        :reload="reloadMessages"
+        @loaded="onMessagesLoaded"
+      />
     </div>
     <MessageInput @send="sendMessage" @sendTask="sendTaskMessage" />
   </div>
@@ -35,19 +38,25 @@ const props = defineProps<{ conversationId: string | null }>();
 const reloadMessages = ref(false);
 const loading = ref(false);
 const messageListContainer = ref<HTMLElement | null>(null);
-const scrollAnchor = ref<HTMLElement | null>(null);
 
 const recipientId = ref<string | null>(null);
 const recipientName = ref<string | null>(null);
 
-// Scroll to the bottom using the scrollAnchor
+// Scroll to the bottom of the message list container
 const scrollToBottom = async () => {
-  await nextTick();
-  if (scrollAnchor.value) {
-    scrollAnchor.value.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  await nextTick(); // Ensure DOM updates are completed
+  if (messageListContainer.value) {
+    console.log("Scrolling to bottom...");
+    messageListContainer.value.scrollTop = messageListContainer.value.scrollHeight;
   } else {
-    console.warn("Scroll anchor not found.");
+    console.warn("Message list container not found.");
   }
+};
+
+// Triggered when messages are loaded
+const onMessagesLoaded = async () => {
+  console.log("Messages loaded. Scrolling to bottom.");
+  await scrollToBottom();
 };
 
 // Fetch recipient ID and name
@@ -58,9 +67,9 @@ const getRecipientId = async () => {
 
   try {
     const response = await fetchy(`/api/conversations/${props.conversationId}`, "GET");
-    console.log("Fetched Conversation:", response.conversation);
+    const currentUserResponse = await fetchy("/api/session", "GET");
+    const currentUserId = currentUserResponse._id;
 
-    const currentUserId = response.currentUserId;
     recipientId.value = response.conversation.participants.find(
       (id: string) => id !== currentUserId
     );
@@ -81,12 +90,11 @@ const sendMessage = async (content: string) => {
     await fetchy(`/api/conversations/messages`, 'POST', {
       body: {
         conversationId: props.conversationId,
-        content: content,
+        content,
         recipient: recipientId.value,
       },
     });
     reloadMessages.value = !reloadMessages.value;
-    await scrollToBottom();
   } catch (error) {
     console.error('Error sending message:', error);
   }
@@ -94,12 +102,10 @@ const sendMessage = async (content: string) => {
 
 // Send a task message
 const sendTaskMessage = async (content: string, task: Task) => {
-  console.log("test");
-  console.log(task.name);
   if (!props.conversationId || !recipientId.value || !task.name) return;
 
   try {
-    console.log("Sending task message to recipient:", recipientId.value); // Debug log
+    console.log("Sending task message to recipient:", recipientId.value);
     await fetchy(`/api/conversations/${props.conversationId}/tasks`, "POST", {
       body: {
         content,
@@ -108,21 +114,30 @@ const sendTaskMessage = async (content: string, task: Task) => {
       },
     });
     reloadMessages.value = !reloadMessages.value;
-    await scrollToBottom();
   } catch (error) {
     console.error("Error sending task message:", error);
   }
 };
 
-onMounted(() => {
-  getRecipientId();
-  scrollToBottom();
+onMounted(async () => {
+  await getRecipientId();
+  await scrollToBottom(); // Scroll to bottom on initial load
 });
 
 watch(
-  () => [props.conversationId, reloadMessages.value],
+  () => props.conversationId,
   async () => {
+    console.log("Conversation ID changed, fetching recipient...");
     await getRecipientId();
+    await scrollToBottom();
+  }
+);
+
+watch(
+  () => reloadMessages.value,
+  async () => {
+    console.log("Reload triggered, ensuring scroll to bottom...");
+    await nextTick(); // Ensure DOM updates for MessageList
     await scrollToBottom();
   }
 );
@@ -132,15 +147,15 @@ watch(
 .conversation-content {
   display: flex;
   flex-direction: column;
-  width: 80vw;
-  height: 80vh;
+  width: 78vw;
+  height: 74vh;
 }
 
 .recipient-name {
   padding: 1em;
   text-align: center;
   font-weight: bold;
-  background-color: #6a635e3c;
+  background-color: #72a1e8;
   border-bottom: 1px solid #ddd;
 }
 
@@ -166,10 +181,9 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%; 
-  font-size: 3EM; 
-  font-weight: bold; 
+  height: 100%;
+  font-size: 3em;
+  font-weight: bold;
   color: #555;
 }
-
 </style>

@@ -18,6 +18,7 @@ import DateSeparator from './DateSeparator.vue';
 import MessageItem from './MessageItem.vue';
 
 const props = defineProps<{ conversationId: string | null; reload: boolean }>();
+const emit = defineEmits(['loaded']);
 
 interface Message {
   _id: string;
@@ -46,6 +47,7 @@ const loadMessages = async () => {
     const response = await fetchy(`/api/conversations/${props.conversationId}/messages`, 'GET');
     messages.value = response.messages || [];
     groupMessagesByDate();
+    emit('loaded'); // Emit the 'loaded' event after loading and grouping messages
   } catch (err) {
     console.error('Error fetching messages:', err);
     error.value = 'Failed to load messages. Please try again.';
