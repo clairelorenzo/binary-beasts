@@ -37,6 +37,9 @@ onBeforeMount(async () => {
         <li>
           <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }"> Tracker </RouterLink>
         </li>
+        <li>
+          <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }"> Messages </RouterLink>
+        </li>
         <li v-if="isLoggedIn">
           <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
           
@@ -58,7 +61,7 @@ onBeforeMount(async () => {
 
 nav {
   padding: 1em 2em;
-  background-color: lightgray;
+  background-color: #4f70a3;
   display: flex;
   align-items: center;
 }

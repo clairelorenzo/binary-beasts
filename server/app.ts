@@ -1,6 +1,7 @@
 import AuthenticatingConcept from "./concepts/authenticating";
 import CommentingConcept from "./concepts/commenting";
 import FriendingConcept from "./concepts/friending";
+import MessagingConcept from "./concepts/messaging";
 import PostingConcept from "./concepts/posting";
 import SessioningConcept from "./concepts/sessioning";
 import TrackingConcept from "./concepts/tracking";
@@ -12,4 +13,5 @@ export const Authing = new AuthenticatingConcept("users");
 export const Posting = new PostingConcept("posts");
 export const Friending = new FriendingConcept("friends");
 export const Tracking = new TrackingConcept();
+export const Messaging = new MessagingConcept("messages");
 export const Commenting = new CommentingConcept("comments");
