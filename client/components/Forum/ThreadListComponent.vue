@@ -13,7 +13,7 @@ const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
-let singlePost = ref<Record<string, string>|undefined>(undefined);
+let singlePost = ref<Record<string, string> | undefined>(undefined);
 let editing = ref(false);
 let searchAuthor = ref("");
 let creating = ref(false);
@@ -30,8 +30,8 @@ async function getPosts(author?: string) {
   posts.value = postResults;
 }
 
-async function fullRefresh(author?:string) {
-  getPosts(author)
+async function fullRefresh(author?: string) {
+  getPosts(author);
   singlePost.value = undefined;
 }
 
@@ -51,17 +51,17 @@ onBeforeMount(async () => {
     <h2 v-else>Posts by {{ searchAuthor }}:</h2>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
-  <section class="posts" v-if="loaded && posts.length !== 0">
+  <section class="posts" v-if="loaded">
     <section class="postList">
       <button class="pure-button-primary pure-button" v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
-      <article v-for="post in posts" :key="post._id" v-on:click="()=>singlePost=post">
+      <article v-for="post in posts" :key="post._id" v-on:click="() => (singlePost = post)">
         <ThreadShortComponent :post="post" @editPost="updateEditing" />
       </article>
     </section>
     <article class="singlePost">
-      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing" :post="singlePost" @refreshPosts="fullRefresh" @editPost="updateEditing"/>
-      <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="()=>creating=false"/>
-      <EditThreadForm v-else-if="editing" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
+      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing && posts.length > 0" :post="singlePost" @refreshPosts="fullRefresh" @editPost="updateEditing" />
+      <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="() => (creating = false)" />
+      <EditThreadForm v-else-if="editing && posts.length > 0" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>
