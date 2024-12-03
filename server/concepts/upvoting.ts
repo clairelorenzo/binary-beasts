@@ -32,8 +32,8 @@ export default class UpvotingConcept {
     return { msg: "Post successfully upvoted!", upvotes: await this.getNumUpvotes(post) };
   }
 
-  async removeUpvote(_id: ObjectId) {
-    await this.upvotes.deleteOne({ _id });
+  async removeUpvote(postAuthor: ObjectId, post: ObjectId, upvoter: ObjectId) {
+    await this.upvotes.deleteOne({ postAuthor, post, upvoter });
     return { msg: "Upvote successfully removed!" };
   }
 

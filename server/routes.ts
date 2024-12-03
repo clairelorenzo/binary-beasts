@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Authing, Commenting, Friending, Messaging, Posting, Sessioning, Tracking } from "./app";
+import { Authing, Commenting, Friending, Messaging, Posting, Sessioning, Tracking, Upvoting } from "./app";
 import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
 import { SessionDoc } from "./concepts/sessioning";
@@ -166,6 +166,8 @@ class Routes {
     return await Friending.rejectRequest(fromOid, user);
   }
 
+  //////////////////////////////////// tracking ////////////////////////////////////
+
   @Router.get("/tracking/percentage")
   async getCompletedPercentage(session: SessionDoc) {
     const user = Sessioning.getUser(session);
@@ -254,6 +256,8 @@ class Routes {
     return { msg: "Tracking profile created successfully!", trackingProfile: result };
   }
 
+  //////////////////////////////////// messaging ////////////////////////////////////
+
   @Router.post("/conversations")
   async createConversation(session: SessionDoc, recipientId: string) {
     const userId = Sessioning.getUser(session);
@@ -325,6 +329,8 @@ class Routes {
     return response;
   }
 
+  //////////////////////////////////// commenting ////////////////////////////////////
+
   @Router.get("/comments")
   @Router.validate(z.object({ postId: z.string().optional() }))
   async getComments(postId: string) {
@@ -358,6 +364,29 @@ class Routes {
     const commentObjectId = new ObjectId(id);
     await Commenting.assertAuthorIsUser(commentObjectId, user);
     return Commenting.delete(commentObjectId);
+  }
+
+  //////////////////////////////////// upvoting ////////////////////////////////////
+
+  @Router.get("/upvotes/:postId")
+  @Router.validate(z.object({ author: z.string().optional() }))
+  async getNumUpvotes(postId: ObjectId) {
+    const numUpvotes = await Upvoting.getNumUpvotes(postId);
+    return numUpvotes;
+  }
+
+  @Router.post("/upvotes/:postId")
+  async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
+    const user = Sessioning.getUser(session);
+    await Upvoting.upvote(postAuthor, post, user);
+    return { msg: "successfully upvoted post" };
+  }
+
+  @Router.delete("/upvotes/:id")
+  async removeUpvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
+    const user = Sessioning.getUser(session);
+    await Upvoting.assertUpvoterIsUser(user, post);
+    await Upvoting.removeUpvote(user, postAuthor, post);
   }
 }
 
