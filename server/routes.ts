@@ -386,7 +386,9 @@ class Routes {
   @Router.post("/upvotes")
   async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
-    await Upvoting.upvote(postAuthor, post, user);
+    const upvotes = await Upvoting.upvote(postAuthor, post, user);
+    if (upvotes.upvotes === 1) await Pointing.awardPoints(user, 5, post);
+    else if (upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
     return { msg: "successfully upvoted post" };
   }
 
