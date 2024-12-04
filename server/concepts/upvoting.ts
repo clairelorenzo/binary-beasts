@@ -28,13 +28,24 @@ export default class UpvotingConcept {
   }
 
   async upvote(postAuthor: ObjectId, post: ObjectId, upvoter: ObjectId) {
-    await this.upvotes.createOne({ postAuthor, post, upvoter });
-    return { msg: "Post successfully upvoted!", upvotes: await this.getNumUpvotes(post) };
+    const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
+    if (!upvoteObject) {
+      await this.upvotes.createOne({ postAuthor, post, upvoter });
+      return { upvotes: await this.getNumUpvotes(post) };
+    }
+  }
+
+  async userUpvotedPost(upvoter: ObjectId, post: ObjectId) {
+    const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
+    if (!upvoteObject) {
+      return false;
+    }
+    return true;
   }
 
   async removeUpvote(postAuthor: ObjectId, post: ObjectId, upvoter: ObjectId) {
     await this.upvotes.deleteOne({ postAuthor, post, upvoter });
-    return { msg: "Upvote successfully removed!" };
+    return { upvotes: await this.getNumUpvotes(post) };
   }
 
   async assertUpvoterIsUser(upvoter: ObjectId, post: ObjectId) {
