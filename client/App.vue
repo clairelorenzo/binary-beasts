@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import PointBoardComponent from "@/components/Points/PointBoardComponent.vue";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 
 const currentRoute = useRoute();
@@ -10,6 +11,8 @@ const currentRouteName = computed(() => currentRoute.name);
 const userStore = useUserStore();
 const { isLoggedIn } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
+
+const hideSide = ["Login", "Messages", "Settings"];
 
 // Make sure to update the session before mounting the app in case the user is already logged in
 onBeforeMount(async () => {
@@ -42,7 +45,6 @@ onBeforeMount(async () => {
         </li>
         <li v-if="isLoggedIn">
           <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
-          
         </li>
         <li v-else>
           <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
@@ -53,7 +55,12 @@ onBeforeMount(async () => {
       <p>{{ toast.message }}</p>
     </article>
   </header>
-  <RouterView />
+  <div class="row">
+    <RouterView class="mainContent" />
+    <section class="sidebar" :class="{ none: hideSide.includes(currentRouteName) }">
+      <PointBoardComponent />
+    </section>
+  </div>
 </template>
 
 <style scoped>
@@ -98,5 +105,25 @@ ul {
 
 .underline {
   text-decoration: underline;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sidebar {
+  margin: 1em 0;
+  width: 15%;
+  height: 100%;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.none {
+  display: none;
 }
 </style>

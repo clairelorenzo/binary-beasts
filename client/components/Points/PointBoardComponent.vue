@@ -8,6 +8,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 const topPoints = ref<Array<Record<string, string>>>();
+const currentPoints = ref(0);
 
 async function getBoard() {
   let postResults;
@@ -19,19 +20,33 @@ async function getBoard() {
   topPoints.value = postResults;
 }
 
+async function getPoints() {
+  let pointsResult;
+  try {
+    pointsResult = await fetchy("/api/pointing", "GET");
+  } catch (_) {
+    return;
+  }
+  currentPoints.value = pointsResult.points;
+}
+
 onBeforeMount(async () => {
   await getBoard();
+  await getPoints();
   loaded.value = true;
 });
 </script>
 
 <template>
-    <section class="board" v-if="loaded">
-      <article class="boardRow" v-for="point in topPoints">
-        <h2>{{ point.owner }}</h2>
-        <p>{{ point.points }}</p>
-      </article>
-    </section>
+  <section>
+    <h3>Current Points: {{ currentPoints }}</h3>
+  </section>
+  <section class="board" v-if="loaded">
+    <article class="boardRow" v-for="point in topPoints">
+      <h2>{{ point.owner }}</h2>
+      <p>{{ point.points }}</p>
+    </article>
+  </section>
 </template>
 
 <style scoped>
@@ -63,6 +78,6 @@ p {
 }
 
 .boardRow:last-child {
-    border: none;
+  border: none;
 }
 </style>
