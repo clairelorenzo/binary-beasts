@@ -375,19 +375,30 @@ class Routes {
     return numUpvotes;
   }
 
+  // @Router.get("/upvotes/limitUpvotes")
+  // async userAlreadyLiked(userId: ObjectId, postId: ObjectId) {
+  //   return await Upvoting.userAlreadyLiked(userId, postId);
+  // }
+
+  // returns true if the user with id `userId` upvoted the post with id `postId`, false otherwise
+  @Router.get("/upvotes/user")
+  async userUpvotedPost(userId: ObjectId, postId: ObjectId) {
+    return await Upvoting.userUpvotedPost(userId, postId);
+  }
+
   @Router.post("/upvotes")
   async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
     await Upvoting.upvote(postAuthor, post, user);
-    return { msg: "successfully upvoted post" };
+    return { msg: "" };
   }
 
   @Router.delete("/upvotes")
   async removeUpvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
     await Upvoting.assertUpvoterIsUser(user, post);
-    await Upvoting.removeUpvote(user, postAuthor, post);
-    return { msg: "successfully removed upvote from post" };
+    await Upvoting.removeUpvote(postAuthor, post, user);
+    return { msg: "" };
   }
 }
 
