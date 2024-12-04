@@ -368,25 +368,26 @@ class Routes {
 
   //////////////////////////////////// upvoting ////////////////////////////////////
 
-  @Router.get("/upvotes/:postId")
+  @Router.get("/upvotes")
   @Router.validate(z.object({ author: z.string().optional() }))
   async getNumUpvotes(postId: ObjectId) {
     const numUpvotes = await Upvoting.getNumUpvotes(postId);
     return numUpvotes;
   }
 
-  @Router.post("/upvotes/:postId")
+  @Router.post("/upvotes")
   async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
     await Upvoting.upvote(postAuthor, post, user);
     return { msg: "successfully upvoted post" };
   }
 
-  @Router.delete("/upvotes/:id")
+  @Router.delete("/upvotes")
   async removeUpvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
     await Upvoting.assertUpvoterIsUser(user, post);
     await Upvoting.removeUpvote(user, postAuthor, post);
+    return { msg: "successfully removed upvote from post" };
   }
 }
 
