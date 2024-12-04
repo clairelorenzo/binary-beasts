@@ -398,8 +398,10 @@ class Routes {
   async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
     const upvotes = await Upvoting.upvote(postAuthor, post, user);
-    if (upvotes.upvotes === 1) await Pointing.awardPoints(user, 5, post);
-    else if (upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
+    if (upvotes && upvotes.upvotes === 1) {
+      await Pointing.awardPoints(postAuthor, 5, post);
+      await Pointing.awardPoints(user, 1, post);
+    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
     return { msg: "successfully upvoted post" };
   }
 
@@ -419,7 +421,7 @@ class Routes {
   }
 
   @Router.get("/pointing/top")
-  async getTopPoints(session: SessionDoc) {
+  async getTopPoints() {
     const points = await Pointing.getPoints();
     return Responses.points(points);
   }

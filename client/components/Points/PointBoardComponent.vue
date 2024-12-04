@@ -2,13 +2,13 @@
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onUpdated, ref } from "vue";
 
-const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 const topPoints = ref<Array<Record<string, string>>>();
-const currentPoints = ref(0);
+const currentPoints = ref<number | undefined>(undefined);
 
 async function getBoard() {
   let postResults;
@@ -32,17 +32,20 @@ async function getPoints() {
 
 onBeforeMount(async () => {
   await getBoard();
-  await getPoints();
   loaded.value = true;
+});
+
+onUpdated(async () => {
+  if (isLoggedIn.value) await getPoints();
 });
 </script>
 
 <template>
   <section>
-    <h3>Current Points: {{ currentPoints }}</h3>
+    <h3 v-if="isLoggedIn">Current Points: {{ currentPoints }}</h3>
   </section>
   <section class="board" v-if="loaded">
-    <article class="boardRow" v-for="point in topPoints">
+    <article class="boardRow" v-for="point in topPoints" :key="point._id">
       <h2>{{ point.owner }}</h2>
       <p>{{ point.points }}</p>
     </article>

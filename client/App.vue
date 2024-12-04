@@ -3,7 +3,7 @@ import PointBoardComponent from "@/components/Points/PointBoardComponent.vue";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 
 const currentRoute = useRoute();
@@ -57,7 +57,7 @@ onBeforeMount(async () => {
   </header>
   <div class="row">
     <RouterView class="mainContent" />
-    <section class="sidebar" :class="{ none: hideSide.includes(currentRouteName) }">
+    <section v-if="currentRouteName" class="sidebar" :class="{ none: hideSide.includes(currentRouteName.toString()) }">
       <PointBoardComponent />
     </section>
   </div>
