@@ -31,7 +31,7 @@ async function getPosts(author?: string) {
 }
 
 async function fullRefresh(author?: string) {
-  getPosts(author);
+  await getPosts(author);
   singlePost.value = undefined;
 }
 
@@ -64,7 +64,6 @@ onBeforeMount(async () => {
       <EditThreadForm v-else-if="editing && posts.length > 0" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
     </article>
   </section>
-  <p v-else-if="loaded">No posts found</p>
   <p v-else>Loading...</p>
 </template>
 

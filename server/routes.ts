@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Authing, Commenting, Friending, Messaging, Posting, Sessioning, Tracking, Upvoting } from "./app";
+import { Authing, Commenting, Friending, Messaging, Pointing, Posting, Sessioning, Tracking, Upvoting } from "./app";
 import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
 import { SessionDoc } from "./concepts/sessioning";
@@ -44,7 +44,11 @@ class Routes {
   @Router.post("/users")
   async createUser(session: SessionDoc, username: string, password: string) {
     Sessioning.isLoggedOut(session);
-    return await Authing.create(username, password);
+    const out = await Authing.create(username, password);
+    if (out.user) {
+      await Pointing.create(out.user._id);
+    }
+    return out;
   }
 
   @Router.patch("/users/username")
@@ -63,7 +67,11 @@ class Routes {
   async deleteUser(session: SessionDoc) {
     const user = Sessioning.getUser(session);
     Sessioning.end(session);
-    return await Authing.delete(user);
+    const out = await Authing.delete(user);
+    if (out) {
+      await Pointing.delete(user);
+    }
+    return out;
   }
 
   @Router.post("/login")
@@ -389,8 +397,12 @@ class Routes {
   @Router.post("/upvotes")
   async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
     const user = Sessioning.getUser(session);
-    await Upvoting.upvote(postAuthor, post, user);
-    return { msg: "" };
+    const upvotes = await Upvoting.upvote(postAuthor, post, user);
+    if (upvotes && upvotes.upvotes === 1) {
+      await Pointing.awardPoints(postAuthor, 5, post);
+      await Pointing.awardPoints(user, 1, post);
+    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
+    return { msg: "successfully upvoted post" };
   }
 
   @Router.delete("/upvotes")
@@ -399,6 +411,35 @@ class Routes {
     await Upvoting.assertUpvoterIsUser(user, post);
     await Upvoting.removeUpvote(postAuthor, post, user);
     return { msg: "" };
+  }
+
+  @Router.get("/pointing")
+  async getUserPoints(session: SessionDoc) {
+    Sessioning.isLoggedIn(session);
+    const user = Sessioning.getUser(session);
+    return await Pointing.getUserPoints(user);
+  }
+
+  @Router.get("/pointing/top")
+  async getTopPoints() {
+    const points = await Pointing.getPoints();
+    return Responses.points(points);
+  }
+
+  @Router.patch("/pointing")
+  async awardUserPoints(session: SessionDoc, amount: string, verifiedPost?: string) {
+    Sessioning.isLoggedIn(session);
+    const numAmount = Number(amount);
+    const user = Sessioning.getUser(session);
+    if (verifiedPost) {
+      const postId = new ObjectId(verifiedPost);
+      await Posting.getById(postId);
+      const result = await Pointing.awardPoints(user, numAmount, postId);
+      return { msg: "Points Awarded", result };
+    } else {
+      const result = await Pointing.awardPoints(user, numAmount);
+      return { msg: "Points Awarded", result };
+    }
   }
 }
 

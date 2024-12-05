@@ -3,6 +3,7 @@ import { CommentDoc } from "./concepts/commenting";
 import { AlreadyFriendsError, FriendNotFoundError, FriendRequestAlreadyExistsError, FriendRequestDoc, FriendRequestNotFoundError } from "./concepts/friending";
 import { PostAuthorNotMatchError, PostDoc } from "./concepts/posting";
 import { Router } from "./framework/router";
+import { PointDoc } from "./concepts/pointing";
 /**
  * This class does useful conversions for the frontend.
  * For example, it converts a {@link PostDoc} into a more readable format for the frontend.
@@ -25,6 +26,25 @@ export default class Responses {
   static async posts(posts: PostDoc[]) {
     const authors = await Authing.idsToUsernames(posts.map((post) => post.author));
     return posts.map((post, i) => ({ ...post, author: authors[i] }));
+  }
+
+  /**
+   * Convert PointDoc into more readable format for the frontend by converting the author id into a username.
+   */
+  static async point(point: PointDoc | null) {
+    if (!point) {
+      return point;
+    }
+    const owner = await Authing.getUserById(point.user);
+    return { ...point, owner: owner.username };
+  }
+
+  /**
+   * Same as {@link post} but for an array of PointDoc for improved performance.
+   */
+  static async points(points: PointDoc[]) {
+    const owners = await Authing.idsToUsernames(points.map((point) => point.user));
+    return points.map((point, i) => ({ ...point, owner: owners[i] }));
   }
 
   /**

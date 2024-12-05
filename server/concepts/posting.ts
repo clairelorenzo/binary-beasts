@@ -42,6 +42,12 @@ export default class PostingConcept {
     return await this.posts.readMany({ author });
   }
 
+  async getById(id: ObjectId) {
+    const result = await this.posts.readOne({ _id: id });
+    if (!result) throw new NotFoundError(`Post ${id} not found`);
+    return result;
+  }
+
   async update(_id: ObjectId, subject?: string, content?: string, picture?: string, options?: PostOptions) {
     // Note that if content or options is undefined, those fields will *not* be updated
     // since undefined values for partialUpdateOne are ignored.
