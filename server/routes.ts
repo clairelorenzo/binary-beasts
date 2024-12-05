@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Authing, Commenting, Friending, Posting, Sessioning, Tracking, Messaging } from "./app";
+import { Authing, Commenting, Friending, Messaging, Posting, Sessioning, Tracking } from "./app";
 import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
 import { SessionDoc } from "./concepts/sessioning";
@@ -323,6 +323,7 @@ class Routes {
     const userId = Sessioning.getUser(session);
     const response = await Messaging.deleteMessage(new ObjectId(conversationId), new ObjectId(messageId), userId);
     return response;
+  }
 
   @Router.get("/comments")
   @Router.validate(z.object({ postId: z.string().optional() }))
@@ -334,6 +335,7 @@ class Routes {
     console.log("Comments from DB:", comments);
     return Responses.comments(comments);
   }
+
   @Router.post("/comments")
   async createComment(session: SessionDoc, postId: string, content: string, options?: CommentOptions) {
     const user = Sessioning.getUser(session);
