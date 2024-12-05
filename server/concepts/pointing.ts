@@ -51,7 +51,7 @@ export default class PointingConcept {
           pointDoc.verifiedPosts.push(verifiedPost);
         } else if (amount < 0 && stringArr.includes(verifiedPost.toString())) {
           pointDoc.verifiedPosts = pointDoc.verifiedPosts.filter((e) => e.toString() !== verifiedPost.toString());
-        } else throw new InvalidPointAwardError(user.toString(), amount, verifiedPost.toString());
+        } else return;
       }
 
       // checks that it won't lead to negative points

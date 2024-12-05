@@ -17,7 +17,7 @@ export default class Responses {
       return post;
     }
     const author = await Authing.getUserById(post.author);
-    return { ...post, author: author.username };
+    return { ...post, owner: author.username };
   }
 
   /**
@@ -25,7 +25,7 @@ export default class Responses {
    */
   static async posts(posts: PostDoc[]) {
     const authors = await Authing.idsToUsernames(posts.map((post) => post.author));
-    return posts.map((post, i) => ({ ...post, author: authors[i] }));
+    return posts.map((post, i) => ({ ...post, user: authors[i] }));
   }
 
   /**

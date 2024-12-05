@@ -21,7 +21,7 @@ const editPost = async (content: string) => {
 
 <template>
   <form @submit.prevent="editPost(content)">
-    <p class="author">{{ props.post.author }}</p>
+    <p class="author">{{ props.post.user }}</p>
     <textarea id="subject" v-model="subject" placeholder="Create a post!" required> </textarea>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
     <div class="base">

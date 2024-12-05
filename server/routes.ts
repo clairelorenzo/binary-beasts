@@ -393,18 +393,22 @@ class Routes {
 
   // returns true if the user with id `userId` upvoted the post with id `postId`, false otherwise
   @Router.get("/upvotes/user")
-  async userUpvotedPost(userId: ObjectId, postId: ObjectId) {
+  async userUpvotedPost(user: string, post: string) {
+    const userId = new ObjectId(user);
+    const postId = new ObjectId(post)
     return await Upvoting.userUpvotedPost(userId, postId);
   }
 
   @Router.post("/upvotes")
-  async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
+  async upvote(session: SessionDoc, postAuthor: string, post: string) {
     const user = Sessioning.getUser(session);
-    const upvotes = await Upvoting.upvote(postAuthor, post, user);
+    const postId = new ObjectId(post)
+    const postAuthorId = new ObjectId(postAuthor)
+    const upvotes = await Upvoting.upvote(postAuthorId, postId, user);
     if (upvotes && upvotes.upvotes === 1) {
-      await Pointing.awardPoints(postAuthor, 5, post);
-      await Pointing.awardPoints(user, 1, post);
-    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
+      await Pointing.awardPoints(postAuthorId, 5, postId);
+      await Pointing.awardPoints(user, 1, postId);
+    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(postAuthorId, 1);
     return { msg: "successfully upvoted post" };
   }
 

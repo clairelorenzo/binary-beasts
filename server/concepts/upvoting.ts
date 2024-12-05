@@ -31,8 +31,8 @@ export default class UpvotingConcept {
     const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
     if (!upvoteObject) {
       await this.upvotes.createOne({ postAuthor, post, upvoter });
-      return { upvotes: await this.getNumUpvotes(post) };
     }
+    return { upvotes: await this.getNumUpvotes(post) };
   }
 
   async userUpvotedPost(upvoter: ObjectId, post: ObjectId) {

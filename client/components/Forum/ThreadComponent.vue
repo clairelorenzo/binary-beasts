@@ -22,7 +22,7 @@ const deletePost = async () => {
 };
 
 async function getNumUpvotes() {
-  let query: Record<string, string> = { postId: props.post._id };
+  let query: Record<string, string> = { post: props.post._id };
   try {
     const count = await fetchy(`/api/upvotes`, "GET", { query });
     return count;
@@ -32,7 +32,7 @@ async function getNumUpvotes() {
 }
 
 async function upvote() {
-  let query: Record<string, string> = { postAuthor: props.post.author, postId: props.post._id };
+  let query: Record<string, string> = { postAuthor: props.post.author, post: props.post._id };
   try {
     await fetchy(`/api/upvotes`, "POST", { query });
     isUpvoted.value = true;
@@ -43,7 +43,7 @@ async function upvote() {
 }
 
 async function removeUpvote() {
-  let query: Record<string, string> = { postAuthor: props.post.author, postId: props.post._id };
+  let query: Record<string, string> = { postAuthor: props.post.author, post: props.post._id };
   try {
     await fetchy(`/api/upvotes`, "DELETE", { query });
     isUpvoted.value = false;
@@ -99,13 +99,13 @@ onBeforeMount(async () => {
   </div>
   <hr />
   <div class="row">
-    <p class="author">{{ props.post.author }}</p>
+    <p class="author">{{ props.post.user }}</p>
     <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
     <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
   </div>
   <p>{{ props.post.content }}</p>
   <div class="base">
-    <menu v-if="props.post.author == currentUsername">
+    <menu v-if="props.post.user == currentUsername">
       <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
