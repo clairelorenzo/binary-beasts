@@ -2,6 +2,7 @@ import { storeToRefs } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
+import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import MessagingView from "../views/MessagingView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
@@ -13,9 +14,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
+      path: "/threads",
       name: "Threads",
       component: ThreadView,
+    },
+    {
+      path: "/",
+      name: "Home",
+      component: HomeView,
     },
     {
       path: "/tracker",
