@@ -14,14 +14,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
-      name: "Home",
-      component: HomeView,
-    },
-    {
       path: "/threads",
       name: "Threads",
       component: ThreadView,
+    },
+    {
+      path: "/",
+      name: "Home",
+      component: HomeView,
     },
     {
       path: "/tracker",

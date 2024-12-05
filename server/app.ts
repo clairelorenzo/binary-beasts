@@ -5,6 +5,8 @@ import MessagingConcept from "./concepts/messaging";
 import PostingConcept from "./concepts/posting";
 import SessioningConcept from "./concepts/sessioning";
 import TrackingConcept from "./concepts/tracking";
+import PointingConcept from "./concepts/pointing";
+import UpvotingConcept from "./concepts/upvoting";
 
 // The app is a composition of concepts instantiated here
 // and synchronized together in `routes.ts`.
@@ -15,3 +17,5 @@ export const Friending = new FriendingConcept("friends");
 export const Tracking = new TrackingConcept();
 export const Messaging = new MessagingConcept("messages");
 export const Commenting = new CommentingConcept("comments");
+export const Upvoting = new UpvotingConcept("upvotes");
+export const Pointing = new PointingConcept("points");

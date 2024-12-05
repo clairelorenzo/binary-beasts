@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ManageFriendsModal from "@/components/Friends/ManageFriendModal.vue";
+import PointBoardComponent from "@/components/Points/PointBoardComponent.vue";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
@@ -26,6 +27,10 @@ const closeManageFriendsModal = () => {
 };
 
 // Update session before mounting
+
+const hideSide = ["Login", "Messages", "Settings"];
+
+// Make sure to update the session before mounting the app in case the user is already logged in
 onBeforeMount(async () => {
   try {
     await userStore.updateSession();
@@ -40,7 +45,7 @@ onBeforeMount(async () => {
     <nav>
       <div class="title">
         <img src="@/assets/images/logo.svg" />
-        <RouterLink :to="{ name: 'Threads' }">
+        <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
         <div class="friend-button" @click="openManageFriendsModal">Manage Friends</div>
@@ -75,6 +80,13 @@ onBeforeMount(async () => {
   />
 
   <RouterView />
+
+  <div class="row">
+    <RouterView class="mainContent" />
+    <section v-if="currentRouteName" class="sidebar" :class="{ none: hideSide.includes(currentRouteName.toString()) }">
+      <PointBoardComponent />
+    </section>
+  </div>
 </template>
 
 <style scoped>
@@ -140,5 +152,25 @@ ul li {
 
 .underline {
   text-decoration: underline;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sidebar {
+  margin: 1em 0;
+  width: 15%;
+  height: 100%;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.none {
+  display: none;
 }
 </style>
