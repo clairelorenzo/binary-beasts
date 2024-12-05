@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import ManageFriendsModal from "@/components/Friends/ManageFriendModal.vue";
 import PointBoardComponent from "@/components/Points/PointBoardComponent.vue";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 
 const currentRoute = useRoute();
@@ -11,6 +12,21 @@ const currentRouteName = computed(() => currentRoute.name);
 const userStore = useUserStore();
 const { isLoggedIn } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
+
+// Ref to control modal visibility
+const isManageFriendsModalOpen = ref(false);
+
+// Function to open the modal
+const openManageFriendsModal = () => {
+  isManageFriendsModalOpen.value = true;
+};
+
+// Function to close the modal
+const closeManageFriendsModal = () => {
+  isManageFriendsModalOpen.value = false;
+};
+
+// Update session before mounting
 
 const hideSide = ["Login", "Messages", "Settings"];
 
@@ -32,6 +48,7 @@ onBeforeMount(async () => {
         <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
+        <div class="friend-button" @click="openManageFriendsModal">Manage Friends</div>
       </div>
       <ul>
         <li>
@@ -55,6 +72,15 @@ onBeforeMount(async () => {
       <p>{{ toast.message }}</p>
     </article>
   </header>
+
+  <!-- Modal for managing friends -->
+  <ManageFriendsModal
+    :isOpen="isManageFriendsModalOpen"
+    @close="closeManageFriendsModal"
+  />
+
+  <RouterView />
+
   <div class="row">
     <RouterView class="mainContent" />
     <section v-if="currentRouteName" class="sidebar" :class="{ none: hideSide.includes(currentRouteName.toString()) }">
@@ -101,6 +127,27 @@ ul {
   align-items: center;
   flex-direction: row;
   gap: 1em;
+}
+
+ul li {
+  background-color: #cfe1e7; 
+  padding: 0.5em 1em;
+  border-radius: 4px; 
+  gap: 1em;
+}
+
+.friend-button {
+  text-align: center;
+  position: relative;
+  left: 2vw;
+  background-color: #6FC5D6;
+  padding: 0.5em 1em;
+  border-radius: 4px; 
+  cursor: pointer;
+}
+
+.friend-button:hover {
+  background-color: #5bb3c4;
 }
 
 .underline {

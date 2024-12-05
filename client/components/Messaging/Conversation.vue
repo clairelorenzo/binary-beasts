@@ -19,136 +19,138 @@
 </template>
 
 <script setup lang="ts">
-import { fetchy } from '@/utils/fetchy';
+  import { fetchy } from '@/utils/fetchy';
 import { nextTick, onMounted, ref, watch } from 'vue';
 import MessageInput from './MessageInput.vue';
 import MessageList from './MessageList.vue';
 
-type Task = {
-  name: string;
-  description: string;
-  reps: number;
-  sets?: number;
-  weight?: number;
-  completed: boolean;
-  previousDifficulty: string;
-};
+  type Task = {
+    name: string;
+    description: string;
+    reps: number;
+    sets?: number;
+    weight?: number;
+    completed: boolean;
+    previousDifficulty: string;
+  };
 
-const props = defineProps<{ conversationId: string | null }>();
-const reloadMessages = ref(false);
-const loading = ref(false);
-const messageListContainer = ref<HTMLElement | null>(null);
+  const props = defineProps<{ conversationId: string | null }>();
+  const reloadMessages = ref(false);
+  const loading = ref(false);
+  const messageListContainer = ref<HTMLElement | null>(null);
 
-const recipientId = ref<string | null>(null);
-const recipientName = ref<string | null>(null);
+  const recipientId = ref<string | null>(null);
+  const recipientName = ref<string | null>(null);
 
-// Scroll to the bottom of the message list container
-const scrollToBottom = async () => {
-  await nextTick(); // Ensure DOM updates are completed
-  if (messageListContainer.value) {
-    console.log("Scrolling to bottom...");
-    messageListContainer.value.scrollTop = messageListContainer.value.scrollHeight;
-  } else {
-    console.warn("Message list container not found.");
-  }
-};
+  // Scroll to the bottom of the message list container
+  const scrollToBottom = async () => {
+    await nextTick(); // Ensure DOM updates are completed
+    if (messageListContainer.value) {
+      console.log(messageListContainer.value.scrollTop);
+      console.log(messageListContainer.value.scrollHeight);
+      messageListContainer.value.scrollTop = messageListContainer.value.scrollHeight;
+    } else {
+      console.warn("Message list container not found.");
+    }
+  };
 
-// Triggered when messages are loaded
-const onMessagesLoaded = async () => {
-  console.log("Messages loaded. Scrolling to bottom.");
-  await scrollToBottom();
-};
+  // Triggered when messages are loaded
+  const onMessagesLoaded = async () => {
+    console.log("Messages loaded. Scrolling to bottom.");
+    await scrollToBottom();
+  };
 
-// Fetch recipient ID and name
-const getRecipientId = async () => {
-  if (!props.conversationId) return;
+  // Fetch recipient ID and name
+  const getRecipientId = async () => {
+    if (!props.conversationId) return;
 
-  loading.value = true;
+    loading.value = true;
 
-  try {
-    const response = await fetchy(`/api/conversations/${props.conversationId}`, "GET");
-    const currentUserResponse = await fetchy("/api/session", "GET");
-    const currentUserId = currentUserResponse._id;
+    try {
+      const response = await fetchy(`/api/conversations/${props.conversationId}`, "GET");
+      const currentUserResponse = await fetchy("/api/session", "GET");
+      const currentUserId = currentUserResponse._id;
 
-    recipientId.value = response.conversation.participants.find(
-      (id: string) => id !== currentUserId
-    );
+      recipientId.value = response.conversation.participants.find(
+        (id: string) => id !== currentUserId
+      );
 
-    const recipientResponse = await fetchy(`/api/users/id/${recipientId.value}`, "GET");
-    recipientName.value = recipientResponse.username;
-  } catch (error) {
-    console.error("Error fetching recipient ID or name:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+      const recipientResponse = await fetchy(`/api/users/id/${recipientId.value}`, "GET");
+      recipientName.value = recipientResponse.username;
+    } catch (error) {
+      console.error("Error fetching recipient ID or name:", error);
+    } finally {
+      loading.value = false;
+    }
+  };
 
-// Send a regular message
-const sendMessage = async (content: string) => {
-  if (!props.conversationId || !content.trim() || !recipientId.value) return;
-  try {
-    await fetchy(`/api/conversations/messages`, 'POST', {
-      body: {
-        conversationId: props.conversationId,
-        content,
-        recipient: recipientId.value,
-      },
-    });
-    reloadMessages.value = !reloadMessages.value;
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
-};
+  // Send a regular message
+  const sendMessage = async (content: string) => {
+    if (!props.conversationId || !content.trim() || !recipientId.value) return;
+    try {
+      await fetchy(`/api/conversations/messages`, 'POST', {
+        body: {
+          conversationId: props.conversationId,
+          content,
+          recipient: recipientId.value,
+        },
+      });
+      reloadMessages.value = !reloadMessages.value;
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
 
-// Send a task message
-const sendTaskMessage = async (content: string, task: Task) => {
-  if (!props.conversationId || !recipientId.value || !task.name) return;
+  // Send a task message
+  const sendTaskMessage = async (content: string, task: Task) => {
+    if (!props.conversationId || !recipientId.value || !task.name) return;
 
-  try {
-    console.log("Sending task message to recipient:", recipientId.value);
-    await fetchy(`/api/conversations/${props.conversationId}/tasks`, "POST", {
-      body: {
-        content,
-        recipient: recipientId.value,
-        task,
-      },
-    });
-    reloadMessages.value = !reloadMessages.value;
-  } catch (error) {
-    console.error("Error sending task message:", error);
-  }
-};
+    try {
+      console.log("Sending task message to recipient:", recipientId.value);
+      await fetchy(`/api/conversations/${props.conversationId}/tasks`, "POST", {
+        body: {
+          content,
+          recipient: recipientId.value,
+          task,
+        },
+      });
+      reloadMessages.value = !reloadMessages.value;
+    } catch (error) {
+      console.error("Error sending task message:", error);
+    }
+  };
 
-onMounted(async () => {
-  await getRecipientId();
-  await scrollToBottom(); // Scroll to bottom on initial load
-});
-
-watch(
-  () => props.conversationId,
-  async () => {
-    console.log("Conversation ID changed, fetching recipient...");
+  onMounted(async () => {
     await getRecipientId();
-    await scrollToBottom();
-  }
-);
+    await scrollToBottom(); // Scroll to bottom on initial load
+  });
 
-watch(
-  () => reloadMessages.value,
-  async () => {
-    console.log("Reload triggered, ensuring scroll to bottom...");
-    await nextTick(); // Ensure DOM updates for MessageList
-    await scrollToBottom();
-  }
-);
+  watch(
+    () => props.conversationId,
+    async () => {
+      console.log("Conversation ID changed, fetching recipient...");
+      await getRecipientId();
+      await scrollToBottom();
+    }
+  );
+
+  watch(
+    () => reloadMessages.value,
+    async () => {
+      console.log("Reload triggered, ensuring scroll to bottom...");
+      await nextTick(); // Ensure DOM updates for MessageList
+      await scrollToBottom();
+    }
+  );
 </script>
 
-<style scoped>
+<style>
 .conversation-content {
   display: flex;
   flex-direction: column;
-  width: 78vw;
+  width: 80vw;
   height: 74vh;
+  overflow-x: hidden;
 }
 
 .recipient-name {
@@ -176,13 +178,13 @@ watch(
 
 .loading-text {
   position: relative;
-  left: 10vw;
+  left: 20vw;
   bottom: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
   color: #555;
 }

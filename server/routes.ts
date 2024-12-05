@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
+
 import { Authing, Commenting, Friending, Messaging, Pointing, Posting, Sessioning, Tracking, Upvoting } from "./app";
 import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
@@ -337,6 +338,7 @@ class Routes {
     return response;
   }
 
+
   //////////////////////////////////// commenting ////////////////////////////////////
 
   @Router.get("/comments")
@@ -349,6 +351,7 @@ class Routes {
     console.log("Comments from DB:", comments);
     return Responses.comments(comments);
   }
+
   @Router.post("/comments")
   async createComment(session: SessionDoc, postId: string, content: string, options?: CommentOptions) {
     const user = Sessioning.getUser(session);
