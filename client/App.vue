@@ -79,8 +79,6 @@ onBeforeMount(async () => {
     @close="closeManageFriendsModal"
   />
 
-  <RouterView />
-
   <div class="row">
     <RouterView class="mainContent" />
     <section v-if="currentRouteName" class="sidebar" :class="{ none: hideSide.includes(currentRouteName.toString()) }">
