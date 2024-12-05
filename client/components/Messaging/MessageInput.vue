@@ -100,6 +100,7 @@ const onSend = () => {
   display: flex;
   flex-direction: column;
   padding: 0.5em;
+  width: 77vw;
   border-top: 1px solid #ccc;
 }
 

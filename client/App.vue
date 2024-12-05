@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import ManageFriendsModal from "@/components/Friends/ManageFriendModal.vue";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 
 const currentRoute = useRoute();
@@ -11,7 +12,20 @@ const userStore = useUserStore();
 const { isLoggedIn } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
 
-// Make sure to update the session before mounting the app in case the user is already logged in
+// Ref to control modal visibility
+const isManageFriendsModalOpen = ref(false);
+
+// Function to open the modal
+const openManageFriendsModal = () => {
+  isManageFriendsModalOpen.value = true;
+};
+
+// Function to close the modal
+const closeManageFriendsModal = () => {
+  isManageFriendsModalOpen.value = false;
+};
+
+// Update session before mounting
 onBeforeMount(async () => {
   try {
     await userStore.updateSession();
@@ -29,6 +43,7 @@ onBeforeMount(async () => {
         <RouterLink :to="{ name: 'Threads' }">
           <h1>BeFit</h1>
         </RouterLink>
+        <div class="friend-button" @click="openManageFriendsModal">Manage Friends</div>
       </div>
       <ul>
         <li>
@@ -42,7 +57,6 @@ onBeforeMount(async () => {
         </li>
         <li v-if="isLoggedIn">
           <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
-          
         </li>
         <li v-else>
           <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
@@ -53,6 +67,13 @@ onBeforeMount(async () => {
       <p>{{ toast.message }}</p>
     </article>
   </header>
+
+  <!-- Modal for managing friends -->
+  <ManageFriendsModal
+    :isOpen="isManageFriendsModalOpen"
+    @close="closeManageFriendsModal"
+  />
+
   <RouterView />
 </template>
 
@@ -94,6 +115,27 @@ ul {
   align-items: center;
   flex-direction: row;
   gap: 1em;
+}
+
+ul li {
+  background-color: #cfe1e7; 
+  padding: 0.5em 1em;
+  border-radius: 4px; 
+  gap: 1em;
+}
+
+.friend-button {
+  text-align: center;
+  position: relative;
+  left: 2vw;
+  background-color: #6FC5D6;
+  padding: 0.5em 1em;
+  border-radius: 4px; 
+  cursor: pointer;
+}
+
+.friend-button:hover {
+  background-color: #5bb3c4;
 }
 
 .underline {
