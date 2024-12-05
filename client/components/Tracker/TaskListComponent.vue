@@ -219,104 +219,147 @@ onMounted(fetchTasks);
 </template>
 
 <style scoped>
+/* General Task List Styles */
 .task-list {
   margin-top: 1em;
   padding: 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .task-item {
-  margin-bottom: 0.5em;
-  padding: 0.5em;
-  border-radius: 0.5em;
-  background-color: var(--secondary-bg);
-  font-size: 0.9rem;
+  padding: 1em;
+  border-radius: 10px;
+  background-color: #F1EFEB; /* Light cream */
+  border: 2px solid #4E70A3; /* Blue accent */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+.task-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Task Header */
 .task-header {
   display: flex;
   align-items: center;
-  margin-bottom: 0.2em;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
 }
 
 .completion-checkbox {
   margin-right: 0.5em;
+  transform: scale(1.2);
 }
 
 .task-name {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4E70A3; /* Sporty Blue */
 }
 
 .task-detail {
   margin: 0.2em 0;
-  font-size: 0.8rem;
-  color: #555;
+  font-size: 0.9rem;
+  color: #6E6E6E; /* Neutral text */
+}
+
+/* Buttons */
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .delete-task-button {
-  background: none;
-  border: none;
-  color: red;
-  font-size: 1.2rem;
-  cursor: pointer;
+  background-color: #F08080; /* Light Red */
+  color: white;
 }
 
 .delete-task-button:hover {
-  color: darkred;
+  background-color: #D9534F; /* Darker Red */
 }
 
 .prompt-button {
-  margin-left: 10px;
-  background-color: #6a5acd;
+  background-color: #4E70A3; /* Sporty Blue */
   color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  border-radius: 5px;
 }
 
 .prompt-button:hover {
-  background-color: #5a4b8d;
+  background-color: #3E5B82; /* Darker Blue */
 }
 
 .modify-task-button {
-  margin-left: 10px;
-  background-color: #32cd32;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  border-radius: 5px;
+  background-color: #CEF5CB; /* Fresh Green */
+  color: #3A5F47; /* Dark Green */
 }
 
 .modify-task-button:hover {
-  background-color: #28a628;
+  background-color: #A3D6A0; /* Darker Green */
 }
 
+/* Modify Task Form */
 .modify-task-form {
-  margin-top: 20px;
-  padding: 1em;
-  background-color: #f0f0f0;
-  border-radius: 8px;
+  margin-top: 1em;
+  padding: 1.5em;
+  border-radius: 10px;
+  background-color: #CBDCF5; /* Light Blue */
+  border: 2px solid #4E70A3; /* Blue border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modify-task-form h3 {
+  margin-bottom: 1em;
+  color: #4E70A3; /* Sporty Blue */
 }
 
 .modify-task-form label {
   display: block;
+  font-size: 0.9rem;
   margin-bottom: 0.5em;
+  color: #4E70A3;
 }
 
 .modify-task-form input,
 .modify-task-form select {
-  padding: 0.5em;
-  margin-bottom: 1em;
   width: 100%;
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border: 1px solid #A3BFD4; /* Subtle Blue */
+  border-radius: 8px;
+  background-color: #F1EFEB; /* Light cream */
+  font-size: 1rem;
+  color: #4E70A3;
 }
 
 .modify-task-form button {
-  margin-top: 10px;
-  padding: 0.7em
+  padding: 0.8em 1.2em;
+}
+
+.modify-task-form button[type="submit"] {
+  background-color: #4E70A3; /* Blue */
+  color: white;
+}
+
+.modify-task-form button[type="submit"]:hover {
+  background-color: #3E5B82; /* Darker Blue */
+}
+
+.modify-task-form button[type="button"] {
+  background-color: #F1EFEB; /* Light cream */
+  color: #4E70A3; /* Blue text */
+}
+
+.modify-task-form button[type="button"]:hover {
+  background-color: #E5DBD5; /* Subtle Cream */
 }
 </style>

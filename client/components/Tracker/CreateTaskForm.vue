@@ -4,15 +4,15 @@ import { fetchy } from "../../utils/fetchy";
 
 const taskName = ref("");
 const taskDescription = ref("");
-const reps = ref()
-const sets = ref()
-const startingWeight = ref()
+const reps = ref();
+const sets = ref();
+const startingWeight = ref();
 const emit = defineEmits(["refreshTasks"]);
 
 const createTask = async (taskName: string, taskDescription: string, reps: number, sets: number, startingWeight: number) => {
   try {
     await fetchy("/api/tracking/tasks", "POST", {
-      body: { taskName: taskName, taskDescription: taskDescription, reps: reps, sets: sets, startingWeight: startingWeight},
+      body: { taskName, taskDescription, reps, sets, startingWeight },
     });
   } catch (_) {
     return;
@@ -64,7 +64,7 @@ const resetForm = () => {
       placeholder="Enter number of sets"
       required
     />
-    <label for="taskName">Starting weight (lbs):</label>
+    <label for="startingWeight">Starting weight (lbs):</label>
     <input
       id="startingWeight"
       type="number"
@@ -72,31 +72,74 @@ const resetForm = () => {
       placeholder="Enter starting weight"
       required
     />
-    <button type="submit" class="pure-button-primary pure-button">Create Task</button>
+    <button type="submit" class="create-task-button">Create Task</button>
   </form>
 </template>
 
 <style scoped>
 .create-task-form {
-  background-color: var(--base-bg);
-  border-radius: 1em;
+  background-color: #f1efeb; /* Soft beige */
+  border: 2px solid #4e70a3; /* Deep blue */
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
-  padding: 1em;
+  gap: 1em;
+  padding: 1.5em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-input,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  padding: 0.5em;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+label {
+  font-family: 'Arial';
+  font-weight: bold;
+  font-size: 18px;
+  color: #4e70a3;
+  margin-bottom: 0.2em;
+}
+
+input {
+  font-family: 'Arial', sans-serif; /* Bold, sporty font */
+  font-size: 16px;
+  padding: 0.8em;
+  border: 2px solid #cef5cb; /* Light green */
+  border-radius: 8px;
+  background-color: #fff;
+  transition: box-shadow 0.3s;
+}
+
+input:focus {
+  box-shadow: 0 0 8px #cef5cb; /* Light green focus effect */
+  outline: none;
+}
+
+.create-task-button {
+  background-color: #4e70a3; /* Deep blue */
+  color: #f1efeb; /* Soft beige text */
+  font-family: 'Arial', sans-serif; /* Sporty font */
+  font-size: 18px;
+  padding: 0.8em 1.2em;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.create-task-button:hover {
+  background-color: #cbdcf5; /* Light blue */
+  transform: scale(1.05);
 }
 
 textarea {
-  height: 6em;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  padding: 0.8em;
+  border: 2px solid #cef5cb;
+  border-radius: 8px;
+  background-color: #fff;
   resize: none;
+}
+
+textarea:focus {
+  box-shadow: 0 0 8px #cef5cb;
+  outline: none;
 }
 </style>
