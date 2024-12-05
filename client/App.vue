@@ -29,7 +29,7 @@ onBeforeMount(async () => {
     <nav>
       <div class="title">
         <img src="@/assets/images/logo.svg" />
-        <RouterLink :to="{ name: 'Threads' }">
+        <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
       </div>
