@@ -47,7 +47,7 @@ onMounted(checkIfMine);
 }
 
 .text-message.mine > .message-content {
-  background-color: #CBDCF5;
+  background-color: var(--lblue);
 }
 
 .text-message.mine {

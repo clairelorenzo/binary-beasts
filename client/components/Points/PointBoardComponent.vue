@@ -65,7 +65,7 @@ p {
 
 .board {
   flex-direction: column;
-  background-color: var(--base-bg);
+  background-color: var(--sbeige);
   border-radius: 1em;
 }
 

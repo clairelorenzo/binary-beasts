@@ -2,8 +2,8 @@
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
+import { defineProps, onBeforeMount, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
-import { defineProps } from "vue";
 
 const props = defineProps(["post", "upvotes", "alreadyUpvoted"]);
 const emit = defineEmits(["editPost", "refreshPosts", "updateUpvotes"]);
@@ -159,11 +159,11 @@ menu {
 }
 
 .thumbs-up-button:hover {
-  background-color: #4e70a3;
+  background-color: var(--dblue);
   border: 1.5px solid black;
 }
 
 .thumbs-up-button.upvoted {
-  background-color: #4e70a3;
+  background-color: var(--dblue);
 }
 </style>

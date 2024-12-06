@@ -45,11 +45,7 @@ const deleteTask = async (taskName: string) => {
 
 const toggleTaskCompletion = async (task: Record<string, any>) => {
   try {
-    const response = await fetchy(
-      `/api/tracking/tasks/${task.name}/completed`,
-      "POST",
-      {}
-    );
+    const response = await fetchy(`/api/tracking/tasks/${task.name}/completed`, "POST", {});
     if (response.msg === "Success") {
       task.completed = task.completed === "true" ? false : true;
     }
@@ -61,16 +57,12 @@ const toggleTaskCompletion = async (task: Record<string, any>) => {
 
 const promptChange = async (taskName: string, currentDifficulty: string) => {
   try {
-    const response = await fetchy(
-      `/api/tracking/tasks/${taskName}/prompt`,
-      "POST",
-      {
-        body: {
-          taskName: taskName,
-          currentDifficulty: currentDifficulty,
-        },
-      }
-    );
+    const response = await fetchy(`/api/tracking/tasks/${taskName}/prompt`, "POST", {
+      body: {
+        taskName: taskName,
+        currentDifficulty: currentDifficulty,
+      },
+    });
     if (response.msg === "Success") {
       alert(`Suggestion for task "${taskName}": ${response.suggestion}`);
     }
@@ -80,13 +72,7 @@ const promptChange = async (taskName: string, currentDifficulty: string) => {
   }
 };
 
-const modifyTask = async (
-  taskName: string,
-  reps: number,
-  sets: number,
-  weight: number,
-  difficulty: string
-) => {
+const modifyTask = async (taskName: string, reps: number, sets: number, weight: number, difficulty: string) => {
   try {
     const response = await fetchy(`/api/tracking/tasks/${taskName}`, "PATCH", {
       body: {
@@ -132,10 +118,8 @@ onMounted(fetchTasks);
         <div class="task-row">
           <div class="task-info">
             <h3 class="task-name">{{ task.name }}</h3>
-            
             <p class="task-description">{{ task.description }}</p>
           </div>
-         
           <div class="task-details">
             <div class="task-detail">
               <span class="bold">{{ task.reps }} reps x {{ task.sets }} sets</span>
@@ -147,36 +131,11 @@ onMounted(fetchTasks);
               <label>Difficulty:</label>
               <span class="bold">{{ task.previousDifficulty }}</span>
             </div>
-          
           </div>
-          <div class="task-header">
-          
-            <input
-            type="checkbox"
-            :checked="task.completed === true"
-            @change="toggleTaskCompletion(task)"
-            class="completion-checkbox"
-          />
-         
-          
-        </div>
           <div class="task-actions">
-            <button
-            class="delete-task-button"
-            @click="deleteTask(task.name)"
-            aria-label="Delete task"
-          >
-          🗑️
-          </button>
-            <button @click="promptChange(task.name, task.previousDifficulty)">
-              Prompt Change
-            </button>
-            <button
-              @click="openModifyForm(task)"
-              style="background-color: #cef5cb;"
-            >
-              Modify Task
-            </button>
+            <button class="delete-task-button" @click="deleteTask(task.name)" aria-label="Delete task">🗑️</button>
+            <button @click="promptChange(task.name, task.previousDifficulty)">Prompt Change</button>
+            <button @click="openModifyForm(task)" style="background-color: #cef5cb">Modify Task</button>
           </div>
         </div>
       </li>
@@ -184,35 +143,18 @@ onMounted(fetchTasks);
 
     <div v-if="showModifyForm" class="modify-task-form">
       <h3>Modify Task: {{ showModifyForm.name }}</h3>
-      <form
-        @submit.prevent="modifyTask(showModifyForm.name, showModifyForm.reps, showModifyForm.sets, showModifyForm.weight, showModifyForm.difficulty)"
-      >
+      <form @submit.prevent="modifyTask(showModifyForm.name, showModifyForm.reps, showModifyForm.sets, showModifyForm.weight, showModifyForm.difficulty)">
         <div>
           <label for="reps">Reps:</label>
-          <input
-            v-model="showModifyForm.reps"
-            type="number"
-            id="reps"
-            required
-          />
+          <input v-model="showModifyForm.reps" type="number" id="reps" required />
         </div>
         <div>
           <label for="sets">Sets:</label>
-          <input
-            v-model="showModifyForm.sets"
-            type="number"
-            id="sets"
-            required
-          />
+          <input v-model="showModifyForm.sets" type="number" id="sets" required />
         </div>
         <div>
           <label for="weight">Weight:</label>
-          <input
-            v-model="showModifyForm.weight"
-            type="number"
-            id="weight"
-            required
-          />
+          <input v-model="showModifyForm.weight" type="number" id="weight" required />
         </div>
         <div>
           <label for="difficulty">Difficulty:</label>
@@ -233,7 +175,7 @@ onMounted(fetchTasks);
 
 <style scoped>
 h2 {
-  color: #4e70a3;
+  color: var(--dblue);
 }
 .task-list {
   list-style: none;
@@ -243,11 +185,13 @@ h2 {
 .task-item {
   padding: 1em;
   border-radius: 10px;
-  background-color: #F1EFEB; /* Light cream */
-  border: 2px solid #4E70A3; /* Blue accent */
+  background-color: #f1efeb; /* Light cream */
+  border: 2px solid #4e70a3; /* Blue accent */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 1rem;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 
 .task-item:hover {
@@ -268,7 +212,7 @@ h2 {
 .task-name {
   font-size: 1.2rem;
   margin: 0;
-  color: #4e70a3;
+  color: var(--dblue);
 }
 
 .task-description {
@@ -309,7 +253,7 @@ h2 {
 }
 
 button[type="submit"] {
-  background-color: #cef5cb;
+  background-color: var(--lgreen);
   padding: 0.5em 1em;
   border: none;
   cursor: pointer;
