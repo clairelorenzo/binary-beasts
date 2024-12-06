@@ -132,8 +132,10 @@ onMounted(fetchTasks);
         <div class="task-row">
           <div class="task-info">
             <h3 class="task-name">{{ task.name }}</h3>
+            
             <p class="task-description">{{ task.description }}</p>
           </div>
+         
           <div class="task-details">
             <div class="task-detail">
               <span class="bold">{{ task.reps }} reps x {{ task.sets }} sets</span>
@@ -145,8 +147,27 @@ onMounted(fetchTasks);
               <label>Difficulty:</label>
               <span class="bold">{{ task.previousDifficulty }}</span>
             </div>
+          
           </div>
+          <div class="task-header">
+          
+            <input
+            type="checkbox"
+            :checked="task.completed === true"
+            @change="toggleTaskCompletion(task)"
+            class="completion-checkbox"
+          />
+         
+          
+        </div>
           <div class="task-actions">
+            <button
+            class="delete-task-button"
+            @click="deleteTask(task.name)"
+            aria-label="Delete task"
+          >
+          🗑️
+          </button>
             <button @click="promptChange(task.name, task.previousDifficulty)">
               Prompt Change
             </button>
@@ -221,11 +242,17 @@ h2 {
 
 .task-item {
   padding: 1em;
-  border: 1px solid #ddd;
-  margin-bottom: 1em;
-  display: flex;
-  flex-direction: column;
-  background-color: #f1efeb;
+  border-radius: 10px;
+  background-color: #F1EFEB; /* Light cream */
+  border: 2px solid #4E70A3; /* Blue accent */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.task-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .task-row {
@@ -272,7 +299,7 @@ h2 {
 .task-actions {
   margin-top: 1em;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 0.5em;
   align-items: flex-end;
 }
@@ -305,5 +332,17 @@ button[type="button"]:hover {
   justify-content: flex-end;
   gap: 1em;
   margin-top: 1em;
+}
+
+.delete-task-button {
+  background: none;
+  border: none;
+  background-color: rgb(199, 93, 93);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.delete-task-button:hover {
+  color: darkred;
 }
 </style>
