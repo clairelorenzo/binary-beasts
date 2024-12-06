@@ -42,7 +42,7 @@ onUpdated(async () => {
 
 <template>
   <section>
-    <h3 v-if="isLoggedIn">Current Points: {{ currentPoints }}</h3>
+    <h3 v-if="isLoggedIn" class="header">Current Points: {{ currentPoints }}</h3>
   </section>
   <section class="board" v-if="loaded">
     <article class="boardRow" v-for="point in topPoints" :key="point._id">
@@ -55,7 +55,6 @@ onUpdated(async () => {
 <style scoped>
 * {
   display: flex;
-  color: var(--dblue);
 }
 
 section,
@@ -66,9 +65,9 @@ p {
 
 .board {
   flex-direction: column;
-  background-color: var(--sbeige);
+  background-color: var(--dblue);
+  color: var(--sbeige);
   border-radius: 1em;
-  border: 2px solid var(--dblue);
 }
 
 .row,
@@ -84,9 +83,14 @@ p {
 
 .boardRow > h3 {
   margin-left: 1em;
+  color: var(--lgreen);
 }
 
 .boardRow:last-child {
   border: none;
+}
+
+.header {
+  color: var(--dblue);
 }
 </style>
