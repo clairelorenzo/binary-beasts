@@ -51,10 +51,10 @@ onBeforeMount(async () => {
     <div class="upvote-container">
       <span class="upvote-count">
         {{ numUpvotes }}
-        <span v-if="numUpvotes.value === 1">upvote</span>
+        <span v-if="numUpvotes === 1">upvote</span>
         <span v-else> upvotes</span>
       </span>
-      <button class="thumbs-up-button" @click="toggleUpvote">👍</button>
+      <button class="thumbs-up-button">👍</button>
     </div>
   </div>
   <p>{{ props.post.content }}</p>
