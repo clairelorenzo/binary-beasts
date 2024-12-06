@@ -6,7 +6,7 @@ import { fetchy } from "../../utils/fetchy";
 import { defineProps } from "vue";
 
 const props = defineProps(["post", "upvotes", "alreadyUpvoted"]);
-const emit = defineEmits(["editPost", "refreshPosts", "updateUpvotes"]);
+const emit = defineEmits(["editPost", "refreshPosts", "updateUpvotes", "updateAlreadyUpvoted"]);
 const { currentUsername } = storeToRefs(useUserStore());
 
 const deletePost = async () => {

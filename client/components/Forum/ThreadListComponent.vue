@@ -50,18 +50,19 @@ function updateEditing() {
   editing.value = !editing.value;
 }
 
-function updateUpvotes(newUpvotes) {
+function updateUpvotes(newUpvotes: number) {
   numUpvotes.value = newUpvotes;
 }
 
-function updateAlreadyUpvoted(newVal) {
+function updateAlreadyUpvoted(newVal: boolean) {
   isUpvoted.value = newVal;
 }
 
-async function checkUserAlreadyUpvoted(post) {
+async function checkUserAlreadyUpvoted(post: string) {
   let query: Record<string, string> = { post: post };
   try {
-    isUpvoted.value = await fetchy(`/api/upvotes/user`, "GET", { query });
+    // isUpvoted.value = await fetchy(`/api/upvotes/user`, "GET", { query });
+    return await fetchy(`/api/upvotes/user`, "GET", { query });
   } catch (error) {
     console.error("Error checking if user already upvoted", error);
   }
