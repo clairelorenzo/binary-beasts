@@ -35,8 +35,8 @@ const emptyForm = () => {
 form {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
-  background-color: #fff;
+  gap: 0.8em;
+  background-color: #CBDCF5; /* Soft beige background */
   padding: 1.5em;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -45,34 +45,49 @@ form {
 }
 
 label {
-  color: #4a2c6e;
+  color: #4E70A3; /* Dark blue for label */
   font-weight: bold;
+  font-size: 1.1em;
 }
 
 textarea {
   height: 4em;
   resize: none;
-  border-radius: 5px;
-  border: 1px solid #b385d2;
-  padding: 0.5em;
+  border-radius: 8px;
+  border: 1px solid #CBDCF5; /* Light blue border */
+  padding: 0.8em;
   font-family: 'Arial', sans-serif;
-  background-color: #f3e8fd;
-  color: #4a2c6e;
-  width: 100%; /* Makes textarea full width */
+  background-color: var(--sbeige); /* Light greenish background */
+  color: #4E70A3; /* Dark blue text */
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+  border-color: #4E70A3; /* Focus border color */
 }
 
 button {
-  background-color: #b385d2; /* Calming purple button */
-  color: white;
+  background-color: #4E70A3; /* Blue button background */
+  color: #F1EFEB; /* Light text on button */
   border: none;
-  border-radius: 5px;
-  padding: 0.5em 1em;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
   cursor: pointer;
   transition: background-color 0.3s;
   font-family: 'Arial', sans-serif;
+  font-weight: bold;
 }
 
 button:hover {
-  background-color: #8e65b7; /* Darker purple on hover */
+  background-color: #3D1A52; /* Darker blue on hover */
 }
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+  form {
+    padding: 1em;
+  }
+}
+
 </style>

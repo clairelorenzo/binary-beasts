@@ -17,7 +17,7 @@ const fetchPercentage = async () => {
     const response = await fetchy("/api/tracking/percentage", "GET");
     percentage.value = response.percentage ?? 0;
   } catch (e) {
-    error.value = "Failed to fetch completion percentage.";
+    error.value = "No tasks to calculate completion; add tasks first!";
   } finally {
     isLoading.value = false;
   }

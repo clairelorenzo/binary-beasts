@@ -74,6 +74,7 @@ input {
   border-radius: 8px;
   background-color: #fff;
   transition: box-shadow 0.3s;
+  width: 95%;
 }
 
 input:focus {

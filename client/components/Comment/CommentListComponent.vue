@@ -17,7 +17,6 @@ onBeforeMount(loadComments);
 
 <template>
   <section class="comments-section">
-    <h3>Comments</h3>
     <div v-if="comments.length">
       <article v-for="comment in comments" :key="comment._id">
         <p class="comment-container"><strong>{{ comment.author }}:</strong> {{ comment.content }}</p>

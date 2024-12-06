@@ -26,7 +26,7 @@ const fetchTasks = async () => {
     });
     tasks.value = response.tasks || [];
   } catch (e) {
-    error.value = "Failed to fetch tasks.";
+    error.value = "No tasks yet";
   } finally {
     isLoading.value = false;
   }
@@ -118,8 +118,16 @@ onMounted(fetchTasks);
         <div class="task-row">
           <div class="task-info">
             <h3 class="task-name">{{ task.name }}</h3>
+            
             <p class="task-description">{{ task.description }}</p>
+            
           </div>
+          <input
+            type="checkbox"
+            :checked="task.completed === true"
+            @change="toggleTaskCompletion(task)"
+            class="completion-checkbox"
+          />
           <div class="task-details">
             <div class="task-detail">
               <span class="bold">{{ task.reps }} reps x {{ task.sets }} sets</span>
@@ -136,7 +144,9 @@ onMounted(fetchTasks);
             <button class="delete-task-button" @click="deleteTask(task.name)" aria-label="Delete task">🗑️</button>
             <button @click="promptChange(task.name, task.previousDifficulty)">Prompt Change</button>
             <button @click="openModifyForm(task)" style="background-color: #cef5cb">Modify Task</button>
+            
           </div>
+          
         </div>
       </li>
     </ul>
@@ -168,6 +178,7 @@ onMounted(fetchTasks);
           <button type="submit">Save Changes</button>
           <button type="button" @click="closeModifyForm">Cancel</button>
         </div>
+        
       </form>
     </div>
   </div>
@@ -185,7 +196,7 @@ h2 {
 .task-item {
   padding: 1em;
   border-radius: 10px;
-  background-color: #f1efeb; /* Light cream */
+  background-color: var(--sbeige); 
   border: 2px solid #4e70a3; /* Blue accent */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 1rem;
@@ -245,7 +256,7 @@ h2 {
   display: flex;
   /* flex-direction: column; */
   gap: 0.5em;
-  align-items: flex-end;
+  align-items:flex-end;
 }
 
 .modify-task-form {
@@ -287,6 +298,10 @@ button[type="button"]:hover {
 }
 
 .delete-task-button:hover {
-  color: darkred;
+  background-color: darkred;
+}
+input {
+  height: 20%;
+  width: 5%
 }
 </style>
