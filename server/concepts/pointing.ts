@@ -51,7 +51,7 @@ export default class PointingConcept {
           pointDoc.verifiedPosts.push(verifiedPost);
         } else if (amount < 0 && stringArr.includes(verifiedPost.toString())) {
           pointDoc.verifiedPosts = pointDoc.verifiedPosts.filter((e) => e.toString() !== verifiedPost.toString());
-        } else throw new InvalidPointAwardError(user.toString(), amount, verifiedPost.toString());
+        } else throw new InvalidPointAwardError();
       }
 
       // checks that it won't lead to negative points
@@ -69,11 +69,7 @@ export class ExistingUserPointsError extends NotAllowedError {
 }
 
 export class InvalidPointAwardError extends NotAllowedError {
-  constructor(
-    public readonly user: string,
-    award: number,
-    post: string,
-  ) {
-    super("invalid award: tried to award {0} to {1} using {2}", award, user, post);
+  constructor() {
+    super("Can't verify your own posts!");
   }
 }
