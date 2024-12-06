@@ -49,6 +49,7 @@ const refreshTasks = () => {
 .tracker-view {
   padding: 1em;
   display: flex;
+  width: 20vw;
   flex-direction: column;
   gap: 1em;
 }

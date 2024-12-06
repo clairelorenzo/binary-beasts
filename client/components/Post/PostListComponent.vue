@@ -54,7 +54,6 @@ onBeforeMount(async () => {
 
 <template>
   <section v-if="isLoggedIn">
-    <h2>Create a post:</h2>
     <CreatePostForm @refreshPosts="getPosts" />
   </section>
   <div class="row">
@@ -109,7 +108,7 @@ article {
 /* Header Section */
 h2 {
   color: #4E70A3; /* Dark blue for headers */
-  font-size: 1.5em;
+  font-size: 3vw;
   font-weight: bold;
   margin-bottom: 1em;
 }

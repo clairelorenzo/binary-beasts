@@ -110,6 +110,8 @@ nav {
 h1 {
   font-size: 2em;
   margin: 0;
+  position: relative;
+  right: .5vw;
   color: var(--sbeige);
 }
 
@@ -182,7 +184,7 @@ ul li {
   display: none;
 }
 .logo {
-  width: 20%;
+  width: 10%;
   height: 10%;
 }
 </style>
