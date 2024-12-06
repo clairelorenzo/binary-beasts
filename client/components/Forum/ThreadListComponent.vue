@@ -3,6 +3,8 @@ import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
+import CommentListComponent from "../Comment/CommentListComponent.vue";
+import CreateCommentForm from "../Comment/CreateCommentForm.vue";
 import CreateThreadForm from "./CreateThreadForm.vue";
 import EditThreadForm from "./EditThreadForm.vue";
 import SearchThreadForm from "./SearchThreadForm.vue";
@@ -76,8 +78,8 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <h2 v-if="!searchAuthor">Posts:</h2>
-    <h2 v-else>Posts by {{ searchAuthor }}:</h2>
+    <h2 v-if="!searchAuthor">Threads:</h2>
+    <h2 v-else>Threads by {{ searchAuthor }}:</h2>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
   <section class="posts" v-if="loaded">
@@ -108,9 +110,12 @@ onBeforeMount(async () => {
         @updateUpvotes="updateUpvotes"
         @updateAlreadyUpvoted="updateAlreadyUpvoted"
       />
+      
       <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="() => (creating = false)" />
       <EditThreadForm v-else-if="editing && posts.length > 0" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
-    </article>
+      <CommentListComponent v-if="singlePost !== undefined && !creating && !editing && posts.length > 0" :postId="singlePost?._id"/> 
+      <CreateCommentForm v-if="singlePost !== undefined && !creating && !editing && posts.length > 0" :postId="singlePost?._id"></CreateCommentForm>
+      </article>
   </section>
   <p v-else>Loading...</p>
 </template>
@@ -160,5 +165,9 @@ article {
 .row {
   display: flex;
   justify-content: space-between;
+}
+
+h2 {
+  color: var(--dblue);
 }
 </style>
