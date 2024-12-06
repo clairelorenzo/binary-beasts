@@ -29,6 +29,7 @@ const resetTasks = async () => {
     </button>
     <p v-if="message" class="message">{{ message }}</p>
   </div>
+  <h2> Make sure to reset all tasks at the end of each day to log your workout of the day and add to your history!</h2>
 </template>
 
 <style scoped>
@@ -69,5 +70,12 @@ const resetTasks = async () => {
   font-size: 16px;
   font-family: "Arial Black", sans-serif; /* Bold font for emphasis */
   color: var(--dblue); /* Deep blue */
+}
+
+h2 {
+  color: var(--dblue);
+  font-family: "Arial", sans-serif;
+  font-size: small;
+  text-align: center;
 }
 </style>
