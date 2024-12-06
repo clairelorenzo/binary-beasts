@@ -3,10 +3,12 @@ import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
 import { fetchy } from "../../utils/fetchy";
+import { ref, onBeforeMount } from "vue";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername } = storeToRefs(useUserStore());
+const numUpvotes = ref<number>(0);
 
 const deletePost = async () => {
   try {
@@ -16,10 +18,33 @@ const deletePost = async () => {
   }
   emit("refreshPosts");
 };
+
+async function getNumUpvotes() {
+  let query: Record<string, string> = { post: props.post._id };
+  try {
+    numUpvotes.value = await fetchy(`/api/upvotes/numUpvotes`, "GET", { query });
+  } catch (error) {
+    console.error("Error getting the number of upvotes for this post", error);
+  }
+}
+
+onBeforeMount(async () => {
+  await getNumUpvotes();
+});
 </script>
 
 <template>
-  <p class="author">{{ props.post.author }}</p>
+  <div class="author_and_upvotes">
+    <p class="author">{{ props.post.author }}</p>
+    <div class="upvote-container">
+      <span class="upvote-count">
+        {{ numUpvotes }}
+        <span v-if="props.upvotes === 1">upvote</span>
+        <span v-else> upvotes</span>
+      </span>
+      <button class="thumbs-up-button" :class="{ upvoted: props.alreadyUpvoted }" @click="toggleUpvote">👍</button>
+    </div>
+  </div>
   <p>{{ props.post.content }}</p>
   <iframe v-if="props.post.picture" :src="props.post.picture" width="640" height="480"></iframe>
   <div class="base">
@@ -68,5 +93,45 @@ menu {
 
 .base article:only-child {
   margin-left: auto;
+}
+
+.subject-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upvote-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upvote-count {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.thumbs-up-button {
+  background-color: #9bc0f6;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.thumbs-up-button:hover {
+  background-color: var(--dblue);
+}
+
+.thumbs-up-button.upvoted {
+  background-color: var(--dblue);
+}
+
+.author_and_upvotes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

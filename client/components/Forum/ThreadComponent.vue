@@ -159,7 +159,6 @@ menu {
 
 .thumbs-up-button:hover {
   background-color: var(--dblue);
-  border: 1.5px solid black;
 }
 
 .thumbs-up-button.upvoted {
