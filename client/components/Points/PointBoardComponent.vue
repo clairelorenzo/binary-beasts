@@ -41,6 +41,7 @@ onUpdated(async () => {
 </script>
 
 <template>
+  <H1>Wellness Points Leaderboard</H1>
   <section>
     <h3 v-if="isLoggedIn" class="header">Current Points: {{ currentPoints }}</h3>
   </section>
@@ -50,11 +51,34 @@ onUpdated(async () => {
       <h3>{{ point.points }}</h3>
     </article>
   </section>
+  <div class="instructions">
+    <h4>+5 for an upvote on your gym post!</h4>
+    <h4>+1 for an upvote on a forum post/comment!</h4>
+    <h4>+1 for being the first upvote on a gym post!</h4>
+  </div>
 </template>
 
 <style scoped>
 * {
   display: flex;
+}
+
+h1{
+  color: #CBB494;
+  position: relative;
+  top: 2vh;
+  text-align: center;
+  font-size: 3vh;
+}
+
+.instructions{
+  text-align: center;
+  flex-direction: column;
+}
+
+h4{
+  font-size: smaller;
+  gap: 1vh;
 }
 
 section,
