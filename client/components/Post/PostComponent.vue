@@ -28,6 +28,18 @@ async function getNumUpvotes() {
   }
 }
 
+// async function toggleUpvote() {
+//   if (props.alreadyUpvoted) {
+//     emit("updateUpvotes", props.upvotes - 1);
+//     emit("updateAlreadyUpvoted", !props.alreadyUpvoted);
+//     await removeUpvote();
+//   } else {
+//     emit("updateUpvotes", props.upvotes + 1);
+//     emit("updateAlreadyUpvoted", !props.alreadyUpvoted);
+//     await upvote();
+//   }
+// }
+
 onBeforeMount(async () => {
   await getNumUpvotes();
 });
@@ -39,10 +51,10 @@ onBeforeMount(async () => {
     <div class="upvote-container">
       <span class="upvote-count">
         {{ numUpvotes }}
-        <span v-if="props.upvotes === 1">upvote</span>
+        <span v-if="numUpvotes.value === 1">upvote</span>
         <span v-else> upvotes</span>
       </span>
-      <button class="thumbs-up-button" :class="{ upvoted: props.alreadyUpvoted }" @click="toggleUpvote">👍</button>
+      <button class="thumbs-up-button" @click="toggleUpvote">👍</button>
     </div>
   </div>
   <p>{{ props.post.content }}</p>
