@@ -70,7 +70,7 @@ h1 {
 }
 
 .form-container {
-  background-color: var(--sbeige);
+  background-color: white;
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

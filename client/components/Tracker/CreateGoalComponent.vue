@@ -53,7 +53,7 @@ const setGoal = async () => {
   background-color: var(--sbeige); /* Soft beige */
   padding: 20px;
   border-radius: 12px;
-  border: 2px solid var(--lblue); /* Light blue */
+  border: 2px solid var(--dblue); /* Light blue */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 

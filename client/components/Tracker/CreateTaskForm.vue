@@ -48,7 +48,7 @@ const resetForm = () => {
 
 <style scoped>
 .create-task-form {
-  background-color: var(--sbeige); /* Soft beige */
+  background-color: var(--sbeige);
   border: 2px solid var(--dblue); /* Deep blue */
   border-radius: 12px;
   display: flex;

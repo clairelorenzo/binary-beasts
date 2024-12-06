@@ -46,7 +46,7 @@ onMounted(fetchPercentage);
 .percentage-box {
   margin: 1.5em 0;
   padding: 1.5em;
-  border: 2px solid var(--lblue); /* Light Blue */
+  border: 2px solid var(--dblue); /* Light Blue */
   border-radius: 12px;
   background-color: var(--sbeige); /* Soft Beige */
   text-align: center;
