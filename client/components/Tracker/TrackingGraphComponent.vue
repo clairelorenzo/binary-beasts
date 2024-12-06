@@ -1,4 +1,3 @@
-
 <script setup lang = 'ts'>
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { onMounted, ref } from 'vue';
@@ -12,13 +11,11 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 const progressHistory = ref<Array<{ weekStart: string, completedTasks: number }>>([]);
 const xVals = ref<Array<string>>([]);
 const yVals = ref<Array<number>>([]);
-const test = ref<Array<number>>([1,2,3]);
 
 
   onMounted(async () => {
   try {
     const response = await fetchy("/api/tracking/history", "GET");
-    console.log(response)
     if (response.history) {
       const formattedHistory = response.history.map((entry: { weekStart: Date; completedTasks: any[] }) => ({
         weekStart: new Date(entry.weekStart).toLocaleDateString(),  // Convert date to a readable string
@@ -43,8 +40,9 @@ const test = ref<Array<number>>([1,2,3]);
           labels: xVals.value,
           datasets: [ 
             { data: yVals.value,
-                backgroundColor: "rgba(203, 220, 245, 1)",
-            borderColor: "rgba(255, 99, 132, 1)",
+                backgroundColor: "rgba(78, 112, 163, 0.6)",
+            borderColor: "rgba(203, 220, 245, 1)",
+            borderWidth: 2,
             label: "Num Tasks Completed"
          } ]
         },
@@ -55,9 +53,14 @@ const test = ref<Array<number>>([1,2,3]);
                 display: true,
                 text: "Number of Tasks Completed per Day",
                 font: {
-                    size: 20
-                }
-            }
+                    size: 22,
+                    family: 'Arial, sans-serif',
+                },
+                padding: {
+                    top: 20,
+                    bottom: 30,
+                },
+            },
           }
         }
       }
@@ -73,3 +76,14 @@ const test = ref<Array<number>>([1,2,3]);
     />
   </template>
   
+
+  <style scoped>
+#tracking-chart {
+  /* margin: 3em auto;
+  max-width: 800px; */
+  background-color: #faf9f7;
+  border-radius: 15px;
+  padding: 2em;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  /* Sporty shadow for depth */
+}
+</style>

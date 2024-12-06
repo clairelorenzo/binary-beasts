@@ -38,24 +38,34 @@ const resetTasks = async () => {
 }
 
 .reset-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
+  background-color: #4e70a3;
+  color: #f1efeb; 
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: 'Arial', sans-serif; 
   border: none;
-  border-radius: 5px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reset-button:hover {
+  background-color: #cbdcf5; 
+  transform: scale(1.05);
 }
 
 .reset-button:disabled {
-  background-color: #ccc;
+  background-color: #cef5cb; /* Light green */
+  color: #999;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .message {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
+  margin-top: 15px;
+  font-size: 16px;
+  font-family: 'Arial Black', sans-serif; /* Bold font for emphasis */
+  color: #4e70a3; /* Deep blue */
 }
 </style>

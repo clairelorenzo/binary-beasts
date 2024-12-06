@@ -15,7 +15,7 @@ const setGoal = async () => {
   isLoading.value = true;
   try {
     // Send a POST request to set the goal
-    const response = await fetchy("/api/tracking/goal",  "POST", {body:{ goal: goal.value }});
+    const response = await fetchy("/api/tracking/goal", "POST", { body: { goal: goal.value } });
     if (response && response.msg) {
       message.value = `Goal set to: ${response.goal}`;
     } else {
@@ -32,6 +32,7 @@ const setGoal = async () => {
 <template>
   <div class="create-goal">
     <label for="goal">Select your goal for the week:</label>
+    <h3 class="message"> Select a goal (muscle gain, working on endurance, or building up strength) to focus on this week! Your goal will affect the workout change prompts given by BeFit </h3>
     <select id="goal" v-model="goal" :disabled="isLoading">
       <option value="" disabled>Select a goal</option>
       <option value="muscle">Muscle</option>
@@ -49,29 +50,60 @@ const setGoal = async () => {
 .create-goal {
   text-align: center;
   margin-top: 20px;
+  background-color: #f1efeb; /* Soft beige */
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #cbdcf5; /* Light blue */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    font-size: 10px; 
+    font-family: 'Arial';
+    font-weight: lighter;
+    color: #000000
+    
 }
 
 label {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 18px;
+  color: #4e70a3; /* Deep blue */
+  margin-bottom: 12px;
   display: block;
+  font-family: 'Arial'; /* Playful font */
+  font-weight: bold;
 }
 
 select {
   font-size: 16px;
-  padding: 8px;
+  padding: 10px;
   margin-bottom: 12px;
+  border: 2px solid #cef5cb; /* Light green */
+  border-radius: 8px;
+  background-color: #fff;
+  outline: none;
+  transition: box-shadow 0.3s;
+}
+
+select:focus {
+  box-shadow: 0 0 8px #cef5cb;
 }
 
 .submit-button {
-  background-color: #4caf50;
+  background-color: #4e70a3;
   color: white;
   padding: 10px 20px;
   font-size: 16px;
+  font-family: 'Arial'; 
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #cbdcf5;
+  transform: scale(1.05);
 }
 
 .submit-button:disabled {
@@ -82,6 +114,7 @@ select {
 .message {
   margin-top: 10px;
   font-size: 14px;
-  color: #333;
+  color: #4e70a3;
+  font-family: 'Arial';
 }
 </style>

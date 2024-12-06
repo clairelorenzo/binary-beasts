@@ -38,33 +38,43 @@ onBeforeMount(async () => {
     // User is not logged in
   }
 });
+
+const activeStyle = {
+  color: "#CEF5CB",
+};
+
+const defaultStyle = {
+  color: "#F1EFEB",
+};
 </script>
 
 <template>
   <header>
     <nav>
       <div class="title">
-        <img src="@/assets/images/logo.svg" />
+        <img class="logo" src="@/assets/images/trace.svg" />
         <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
-        <div class="friend-button" @click="openManageFriendsModal">Manage Friends</div>
+        <div class="friend-button" @click="openManageFriendsModal"> 
+          <img src="@/assets/images/friends.svg" />
+        </div>
       </div>
       <ul>
         <li>
-          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }"> Threads </RouterLink>
+          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads'}" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Threads </RouterLink>
+        </li>
+        <li style="color: #f1efeb">
+          <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }" :style="currentRouteName === 'Tracker' ? activeStyle : defaultStyle"> Tracker </RouterLink>
         </li>
         <li>
-          <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }"> Tracker </RouterLink>
-        </li>
-        <li>
-          <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }"> Messages </RouterLink>
+          <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }" :style="currentRouteName === 'Messages' ? activeStyle : defaultStyle"> Messages </RouterLink>
         </li>
         <li v-if="isLoggedIn">
-          <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
+          <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }" :style="currentRouteName === 'Settings' ? activeStyle : defaultStyle"> Settings </RouterLink>
         </li>
         <li v-else>
-          <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
+          <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }" :style="currentRouteName === 'Login' ? activeStyle : defaultStyle"> Login </RouterLink>
         </li>
       </ul>
     </nav>
@@ -92,14 +102,15 @@ onBeforeMount(async () => {
 
 nav {
   padding: 1em 2em;
-  background-color: #4f70a3;
+  background-color: #4e70a3;
   display: flex;
   align-items: center;
 }
-
 h1 {
   font-size: 2em;
   margin: 0;
+  color: #F1EFEB;
+  font-family: "Arial"
 }
 
 .title {
@@ -128,7 +139,7 @@ ul {
 }
 
 ul li {
-  background-color: #cfe1e7; 
+  /* background-color: #cfe1e7;  */
   padding: 0.5em 1em;
   border-radius: 4px; 
   gap: 1em;
@@ -138,14 +149,13 @@ ul li {
   text-align: center;
   position: relative;
   left: 2vw;
-  background-color: #6FC5D6;
   padding: 0.5em 1em;
   border-radius: 4px; 
   cursor: pointer;
 }
 
 .friend-button:hover {
-  background-color: #5bb3c4;
+  background-color: #cbdcf5;
 }
 
 .underline {
@@ -171,4 +181,11 @@ ul li {
 .none {
   display: none;
 }
+.logo {
+  width: 20%;
+  height: 10%
+}
+
+
 </style>
+

@@ -29,7 +29,7 @@ onMounted(fetchPercentage);
 <template>
   <div class="percentage-box">
     <h3>Task Completion Progress</h3>
-    <div v-if="isLoading">Loading...</div>
+    <div v-if="isLoading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-else>
       <p>
@@ -48,26 +48,50 @@ onMounted(fetchPercentage);
 
 <style scoped>
 .percentage-box {
-  margin: 1em 0;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: var(--secondary-bg);
+  margin: 1.5em 0;
+  padding: 1.5em;
+  border: 2px solid #cbdcf5; /* Light Blue */
+  border-radius: 12px;
+  background-color: #f1efeb; /* Soft Beige */
   text-align: center;
+  font-family: 'Arial', sans-serif; /* Sporty font */
+  color: #4e70a3; /* Deep Blue */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  margin-bottom: 1em;
+  font-size: 20px;
+  color: #4e70a3; /* Deep Blue */
+}
+
+.loading,
+.error {
+  font-size: 16px;
+  color: #e57373; /* Soft red for error */
 }
 
 .progress-bar {
-  margin-top: 1em;
-  height: 20px;
-  background-color: #e0e0e0;
-  border-radius: 10px;
+  margin-top: 1.5em;
+  height: 24px;
+  background-color: #cef5cb; /* Light Green */
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
 }
 
 .progress {
   height: 100%;
-  background-color: #76c7c0;
+  background-color: #4e70a3; /* Deep Blue */
   transition: width 0.4s ease;
+}
+
+p {
+  font-size: 16px;
+}
+
+strong {
+  color: #4e70a3; /* Deep Blue */
+  font-weight: bold;
 }
 </style>
