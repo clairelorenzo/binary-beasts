@@ -76,7 +76,6 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <p class="subject">{{ "singlePost._id" }}</p>
     <h2 v-if="!searchAuthor">Posts:</h2>
     <h2 v-else>Posts by {{ searchAuthor }}:</h2>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
