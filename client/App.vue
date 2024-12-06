@@ -56,7 +56,9 @@ const defaultStyle = {
         <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
-        <div class="friend-button" @click="openManageFriendsModal">Manage Friends</div>
+        <div class="friend-button" @click="openManageFriendsModal"> 
+          <img src="@/assets/images/friends.svg" />
+        </div>
       </div>
       <ul>
         <li>
@@ -137,7 +139,7 @@ ul {
 }
 
 ul li {
-  background-color: #cfe1e7; 
+  /* background-color: #cfe1e7;  */
   padding: 0.5em 1em;
   border-radius: 4px; 
   gap: 1em;
@@ -147,14 +149,13 @@ ul li {
   text-align: center;
   position: relative;
   left: 2vw;
-  background-color: #6FC5D6;
   padding: 0.5em 1em;
   border-radius: 4px; 
   cursor: pointer;
 }
 
 .friend-button:hover {
-  background-color: #5bb3c4;
+  background-color: #cbdcf5;
 }
 
 .underline {

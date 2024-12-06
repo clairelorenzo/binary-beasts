@@ -38,11 +38,11 @@ const resetTasks = async () => {
 }
 
 .reset-button {
-  background-color: #4e70a3; /* Deep blue */
-  color: #f1efeb; /* Soft beige */
+  background-color: #4e70a3;
+  color: #f1efeb; 
   padding: 12px 24px;
   font-size: 18px;
-  font-family: 'Arial', sans-serif; /* Sporty font */
+  font-family: 'Arial', sans-serif; 
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -51,7 +51,7 @@ const resetTasks = async () => {
 }
 
 .reset-button:hover {
-  background-color: #cbdcf5; /* Light blue */
+  background-color: #cbdcf5; 
   transform: scale(1.05);
 }
 
