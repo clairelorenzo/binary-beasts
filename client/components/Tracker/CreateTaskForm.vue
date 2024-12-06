@@ -59,7 +59,6 @@ const resetForm = () => {
 }
 
 label {
-  font-family: "Arial";
   font-weight: bold;
   font-size: 18px;
   color: var(--dblue);

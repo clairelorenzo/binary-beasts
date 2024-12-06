@@ -97,6 +97,10 @@ const defaultStyle = {
 <style scoped>
 @import "./assets/toast.css";
 
+* {
+  font-family: "Arial";
+}
+
 nav {
   padding: 1em 2em;
   background-color: var(--dblue);
@@ -107,7 +111,6 @@ h1 {
   font-size: 2em;
   margin: 0;
   color: var(--sbeige);
-  font-family: "Arial";
 }
 
 .title {

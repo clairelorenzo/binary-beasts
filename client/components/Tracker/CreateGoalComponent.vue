@@ -59,7 +59,6 @@ const setGoal = async () => {
 
 .message {
   font-size: 10px;
-  font-family: "Arial";
   font-weight: lighter;
   color: #000000;
 }
@@ -69,7 +68,6 @@ label {
   color: var(--dblue); /* Deep blue */
   margin-bottom: 12px;
   display: block;
-  font-family: "Arial"; /* Playful font */
   font-weight: bold;
 }
 
@@ -93,7 +91,6 @@ select:focus {
   color: white;
   padding: 10px 20px;
   font-size: 16px;
-  font-family: "Arial";
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -116,6 +113,5 @@ select:focus {
   margin-top: 10px;
   font-size: 14px;
   color: var(--dblue);
-  font-family: "Arial";
 }
 </style>

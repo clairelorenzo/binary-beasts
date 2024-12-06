@@ -129,7 +129,7 @@ p,
 }
 
 article {
-  background-color: var(--base-bg);
+  background-color: var(--sbeige);
   border-radius: 1em;
   display: flex;
   flex-direction: column;
