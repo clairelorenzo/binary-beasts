@@ -2,7 +2,6 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-
 import { Authing, Commenting, Friending, Messaging, Pointing, Posting, Sessioning, Tracking, Upvoting } from "./app";
 import { CommentOptions } from "./concepts/commenting";
 import { PostOptions } from "./concepts/posting";
@@ -338,7 +337,6 @@ class Routes {
     return response;
   }
 
-
   //////////////////////////////////// commenting ////////////////////////////////////
 
   @Router.get("/comments")
@@ -379,41 +377,40 @@ class Routes {
 
   //////////////////////////////////// upvoting ////////////////////////////////////
 
-  @Router.get("/upvotes")
-  @Router.validate(z.object({ author: z.string().optional() }))
-  async getNumUpvotes(postId: ObjectId) {
-    const numUpvotes = await Upvoting.getNumUpvotes(postId);
+  @Router.get("/upvotes/numUpvotes")
+  async getNumUpvotes(post: string) {
+    const postObject = new ObjectId(post);
+    const numUpvotes = await Upvoting.getNumUpvotes(postObject);
     return numUpvotes;
   }
 
-  // @Router.get("/upvotes/limitUpvotes")
-  // async userAlreadyLiked(userId: ObjectId, postId: ObjectId) {
-  //   return await Upvoting.userAlreadyLiked(userId, postId);
-  // }
-
   // returns true if the user with id `userId` upvoted the post with id `postId`, false otherwise
   @Router.get("/upvotes/user")
-  async userUpvotedPost(userId: ObjectId, postId: ObjectId) {
-    return await Upvoting.userUpvotedPost(userId, postId);
+  async userUpvotedPost(session: SessionDoc, post: string) {
+    const user = Sessioning.getUser(session);
+    const postObject = new ObjectId(post);
+    return await Upvoting.userUpvotedPost(postObject, user);
   }
 
   @Router.post("/upvotes")
-  async upvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
+  async upvote(session: SessionDoc, post: string) {
     const user = Sessioning.getUser(session);
-    const upvotes = await Upvoting.upvote(postAuthor, post, user);
+    const postObject = new ObjectId(post);
+    const upvotes = await Upvoting.upvote(postObject, user);
     if (upvotes && upvotes.upvotes === 1) {
-      await Pointing.awardPoints(postAuthor, 5, post);
-      await Pointing.awardPoints(user, 1, post);
-    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(postAuthor, 1);
-    return { msg: "successfully upvoted post" };
+      await Pointing.awardPoints(user, 5, postObject);
+      await Pointing.awardPoints(user, 1, postObject);
+    } else if (upvotes && upvotes.upvotes > 5) await Pointing.awardPoints(user, 1);
+    return { msg: "upvoted!" };
   }
 
   @Router.delete("/upvotes")
-  async removeUpvote(session: SessionDoc, postAuthor: ObjectId, post: ObjectId) {
+  async removeUpvote(session: SessionDoc, post: string) {
     const user = Sessioning.getUser(session);
-    await Upvoting.assertUpvoterIsUser(user, post);
-    await Upvoting.removeUpvote(postAuthor, post, user);
-    return { msg: "" };
+    const postObject = new ObjectId(post);
+    await Upvoting.assertUpvoterIsUser(postObject, user);
+    await Upvoting.removeUpvote(postObject, user);
+    return { msg: "removed upvote!" };
   }
 
   @Router.get("/pointing")

@@ -3,7 +3,6 @@ import DocCollection, { BaseDoc } from "../framework/doc";
 import { NotAllowedError, NotFoundError } from "./errors";
 
 export interface UpvoteDoc extends BaseDoc {
-  postAuthor: ObjectId;
   post: ObjectId;
   upvoter: ObjectId;
 }
@@ -23,33 +22,35 @@ export default class UpvotingConcept {
 
   // returns the number of upvotes that a post has
   async getNumUpvotes(post: ObjectId) {
-    const upvotes = await this.upvotes.readMany({ post });
-    return upvotes.length;
+    const upvoteArray = await this.upvotes.readMany({ post: post });
+    console.log("POST ID: ", post);
+    console.log("NUMBER OF VOTES: ", upvoteArray.length);
+    return upvoteArray.length;
   }
 
-  async upvote(postAuthor: ObjectId, post: ObjectId, upvoter: ObjectId) {
-    const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
+  async upvote(post: ObjectId, upvoter: ObjectId) {
+    const upvoteObject = await this.upvotes.readOne({ post: post, upvoter: upvoter });
     if (!upvoteObject) {
-      await this.upvotes.createOne({ postAuthor, post, upvoter });
+      await this.upvotes.createOne({ post, upvoter });
       return { upvotes: await this.getNumUpvotes(post) };
     }
   }
 
-  async userUpvotedPost(upvoter: ObjectId, post: ObjectId) {
-    const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
+  async userUpvotedPost(post: ObjectId, upvoter: ObjectId) {
+    const upvoteObject = await this.upvotes.readOne({ post: post, upvoter: upvoter });
     if (!upvoteObject) {
       return false;
     }
     return true;
   }
 
-  async removeUpvote(postAuthor: ObjectId, post: ObjectId, upvoter: ObjectId) {
-    await this.upvotes.deleteOne({ postAuthor, post, upvoter });
+  async removeUpvote(post: ObjectId, upvoter: ObjectId) {
+    await this.upvotes.deleteOne({ post: post, upvoter: upvoter });
     return { upvotes: await this.getNumUpvotes(post) };
   }
 
-  async assertUpvoterIsUser(upvoter: ObjectId, post: ObjectId) {
-    const upvoteObject = await this.upvotes.readOne({ upvoter: upvoter, post: post });
+  async assertUpvoterIsUser(post: ObjectId, upvoter: ObjectId) {
+    const upvoteObject = await this.upvotes.readOne({ post: post, upvoter: upvoter });
     if (!upvoteObject) {
       throw new NotFoundError(`upvote does not exist!`);
     }

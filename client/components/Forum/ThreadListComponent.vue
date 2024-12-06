@@ -17,6 +17,17 @@ let singlePost = ref<Record<string, string> | undefined>(undefined);
 let editing = ref(false);
 let searchAuthor = ref("");
 let creating = ref(false);
+const numUpvotes = ref<number>(0);
+const isUpvoted = ref<boolean>(false);
+
+async function getNumUpvotes(post: string) {
+  let query: Record<string, string> = { post: post };
+  try {
+    return await fetchy(`/api/upvotes/numUpvotes`, "GET", { query });
+  } catch (error) {
+    console.error("Error getting the number of upvotes for this post", error);
+  }
+}
 
 async function getPosts(author?: string) {
   let query: Record<string, string> = author !== undefined ? { author } : {};
@@ -39,6 +50,23 @@ function updateEditing() {
   editing.value = !editing.value;
 }
 
+function updateUpvotes(newUpvotes) {
+  numUpvotes.value = newUpvotes;
+}
+
+function updateAlreadyUpvoted(newVal) {
+  isUpvoted.value = newVal;
+}
+
+async function checkUserAlreadyUpvoted(post) {
+  let query: Record<string, string> = { post: post };
+  try {
+    isUpvoted.value = await fetchy(`/api/upvotes/user`, "GET", { query });
+  } catch (error) {
+    console.error("Error checking if user already upvoted", error);
+  }
+}
+
 onBeforeMount(async () => {
   await getPosts();
   loaded.value = true;
@@ -47,6 +75,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
+    <p class="subject">{{ "singlePost._id" }}</p>
     <h2 v-if="!searchAuthor">Posts:</h2>
     <h2 v-else>Posts by {{ searchAuthor }}:</h2>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
@@ -54,12 +83,31 @@ onBeforeMount(async () => {
   <section class="posts" v-if="loaded">
     <section class="postList">
       <button class="pure-button-primary pure-button" v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
-      <article v-for="post in posts" :key="post._id" v-on:click="() => (singlePost = post)">
+      <article
+        v-for="post in posts"
+        :key="post._id"
+        v-on:click="
+          async () => {
+            singlePost = post;
+            numUpvotes = await getNumUpvotes(singlePost._id);
+            isUpvoted = await checkUserAlreadyUpvoted(singlePost._id);
+          }
+        "
+      >
         <ThreadShortComponent :post="post" @editPost="updateEditing" />
       </article>
     </section>
     <article class="singlePost">
-      <ThreadComponent v-if="singlePost !== undefined && !creating && !editing && posts.length > 0" :post="singlePost" @refreshPosts="fullRefresh" @editPost="updateEditing" />
+      <ThreadComponent
+        v-if="singlePost !== undefined && !creating && !editing && posts.length > 0"
+        :post="singlePost"
+        :upvotes="numUpvotes"
+        :alreadyUpvoted="isUpvoted"
+        @refreshPosts="fullRefresh"
+        @editPost="updateEditing"
+        @updateUpvotes="updateUpvotes"
+        @updateAlreadyUpvoted="updateAlreadyUpvoted"
+      />
       <CreateThreadForm v-else-if="creating" @refreshPosts="getPosts" @cancelPost="() => (creating = false)" />
       <EditThreadForm v-else-if="editing && posts.length > 0" :post="singlePost" @refreshPosts="getPosts" @editPost="updateEditing" />
     </article>
