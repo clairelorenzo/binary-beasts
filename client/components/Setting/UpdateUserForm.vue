@@ -40,3 +40,10 @@ async function updatePassword() {
     </fieldset>
   </form>
 </template>
+
+<style scoped>
+
+form {
+  justify-content: center;
+}
+</style>
