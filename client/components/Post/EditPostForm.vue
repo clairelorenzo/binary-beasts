@@ -5,11 +5,12 @@ import { formatDate } from "../../utils/formatDate";
 
 const props = defineProps(["post"]);
 const content = ref(props.post.content);
+const picture = ref(props.post.picture);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 
-const editPost = async (content: string) => {
+const editPost = async (content: string, picture: string) => {
   try {
-    await fetchy(`/api/posts/${props.post._id}`, "PATCH", { body: { content: content } });
+    await fetchy(`/api/posts/${props.post._id}`, "PATCH", { body: { content: content, picture: picture } });
   } catch (e) {
     return;
   }
@@ -19,9 +20,10 @@ const editPost = async (content: string) => {
 </script>
 
 <template>
-  <form @submit.prevent="editPost(content)">
+  <form @submit.prevent="editPost(content, picture)">
     <p class="author">{{ props.post.author }}</p>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
+    <textarea id="picture" v-model="picture" placeholder="Add a picture!" required> </textarea>
     <div class="base">
       <menu>
         <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>

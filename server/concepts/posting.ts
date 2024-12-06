@@ -3,6 +3,13 @@ import { ObjectId } from "mongodb";
 import DocCollection, { BaseDoc } from "../framework/doc";
 import { NotAllowedError, NotFoundError } from "./errors";
 
+function parseUrl(src: string) {
+  const re = /(.+\/)/gm;
+  const parsed_src = src.match(re);
+  if (parsed_src) return parsed_src[0] + "preview";
+  else throw new NotAllowedError("Invalid Image URL");
+}
+
 export interface PostOptions {
   backgroundColor?: string;
 }
@@ -29,6 +36,7 @@ export default class PostingConcept {
   }
 
   async create(author: ObjectId, content: string, subject: string, picture?: string, options?: PostOptions) {
+    if (picture) picture = parseUrl(picture);
     const _id = await this.posts.createOne({ author, content, subject, picture, options });
     return { msg: "Post successfully created!", post: await this.posts.readOne({ _id }) };
   }
@@ -51,6 +59,7 @@ export default class PostingConcept {
   async update(_id: ObjectId, subject?: string, content?: string, picture?: string, options?: PostOptions) {
     // Note that if content or options is undefined, those fields will *not* be updated
     // since undefined values for partialUpdateOne are ignored.
+    if (picture) picture = parseUrl(picture);
     await this.posts.partialUpdateOne({ _id }, { content, subject, picture, options });
     return { msg: "Post successfully updated!" };
   }
