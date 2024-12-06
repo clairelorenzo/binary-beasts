@@ -40,11 +40,11 @@ onBeforeMount(async () => {
 });
 
 const activeStyle = {
-  color: "#CEF5CB",
+  color: "var(--lgreen)",
 };
 
 const defaultStyle = {
-  color: "#F1EFEB",
+  color: "var(--sbeige)",
 };
 </script>
 
@@ -56,15 +56,15 @@ const defaultStyle = {
         <RouterLink :to="{ name: 'Home' }">
           <h1>BeFit</h1>
         </RouterLink>
-        <div class="friend-button" @click="openManageFriendsModal"> 
+        <div class="friend-button" @click="openManageFriendsModal">
           <img src="@/assets/images/friends.svg" />
         </div>
       </div>
       <ul>
         <li>
-          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads'}" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Threads </RouterLink>
+          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Threads </RouterLink>
         </li>
-        <li style="color: #f1efeb">
+        <li style="color: var(--sbeige)">
           <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }" :style="currentRouteName === 'Tracker' ? activeStyle : defaultStyle"> Tracker </RouterLink>
         </li>
         <li>
@@ -84,10 +84,7 @@ const defaultStyle = {
   </header>
 
   <!-- Modal for managing friends -->
-  <ManageFriendsModal
-    :isOpen="isManageFriendsModalOpen"
-    @close="closeManageFriendsModal"
-  />
+  <ManageFriendsModal :isOpen="isManageFriendsModalOpen" @close="closeManageFriendsModal" />
 
   <div class="row">
     <RouterView class="mainContent" />
@@ -102,15 +99,15 @@ const defaultStyle = {
 
 nav {
   padding: 1em 2em;
-  background-color: #4e70a3;
+  background-color: var(--dblue);
   display: flex;
   align-items: center;
 }
 h1 {
   font-size: 2em;
   margin: 0;
-  color: #F1EFEB;
-  font-family: "Arial"
+  color: var(--sbeige);
+  font-family: "Arial";
 }
 
 .title {
@@ -141,7 +138,7 @@ ul {
 ul li {
   /* background-color: #cfe1e7;  */
   padding: 0.5em 1em;
-  border-radius: 4px; 
+  border-radius: 4px;
   gap: 1em;
 }
 
@@ -150,12 +147,12 @@ ul li {
   position: relative;
   left: 2vw;
   padding: 0.5em 1em;
-  border-radius: 4px; 
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .friend-button:hover {
-  background-color: #cbdcf5;
+  background-color: var(--lblue);
 }
 
 .underline {
@@ -183,9 +180,6 @@ ul li {
 }
 .logo {
   width: 20%;
-  height: 10%
+  height: 10%;
 }
-
-
 </style>
-

@@ -55,7 +55,7 @@ const refreshTasks = () => {
 
 h1 {
   text-align: center;
-  color: #4e70a3;
+  color: var(--dblue);
 }
 
 .top-section {
@@ -70,14 +70,14 @@ h1 {
 }
 
 .form-container {
-  background-color: #f1efeb;
+  background-color: var(--sbeige);
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .task-list-container {
-  /* background-color: #cbdcf5; */
+  /* background-color: var(--lblue); */
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -36,11 +36,7 @@ onMounted(fetchPercentage);
         You've completed <strong>{{ percentage ?? 0 }}%</strong> of your tasks this week!
       </p>
       <div class="progress-bar">
-        <div
-          class="progress"
-          :style="{ width: `${percentage ?? 0}%` }"
-          aria-label="Completion progress"
-        ></div>
+        <div class="progress" :style="{ width: `${percentage ?? 0}%` }" aria-label="Completion progress"></div>
       </div>
     </div>
   </div>
@@ -50,19 +46,19 @@ onMounted(fetchPercentage);
 .percentage-box {
   margin: 1.5em 0;
   padding: 1.5em;
-  border: 2px solid #cbdcf5; /* Light Blue */
+  border: 2px solid var(--lblue); /* Light Blue */
   border-radius: 12px;
-  background-color: #f1efeb; /* Soft Beige */
+  background-color: var(--sbeige); /* Soft Beige */
   text-align: center;
-  font-family: 'Arial', sans-serif; /* Sporty font */
-  color: #4e70a3; /* Deep Blue */
+  font-family: "Arial", sans-serif; /* Sporty font */
+  color: var(--dblue); /* Deep Blue */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
   margin-bottom: 1em;
   font-size: 20px;
-  color: #4e70a3; /* Deep Blue */
+  color: var(--dblue); /* Deep Blue */
 }
 
 .loading,
@@ -74,7 +70,7 @@ h3 {
 .progress-bar {
   margin-top: 1.5em;
   height: 24px;
-  background-color: #cef5cb; /* Light Green */
+  background-color: var(--lgreen); /* Light Green */
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -82,7 +78,7 @@ h3 {
 
 .progress {
   height: 100%;
-  background-color: #4e70a3; /* Deep Blue */
+  background-color: var(--dblue); /* Deep Blue */
   transition: width 0.4s ease;
 }
 
@@ -91,7 +87,7 @@ p {
 }
 
 strong {
-  color: #4e70a3; /* Deep Blue */
+  color: var(--dblue); /* Deep Blue */
   font-weight: bold;
 }
 </style>

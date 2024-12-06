@@ -33,53 +33,23 @@ const resetForm = () => {
 <template>
   <form @submit.prevent="createTask(taskName, taskDescription, reps, sets, startingWeight)" class="create-task-form">
     <label for="taskName">Task Name:</label>
-    <input
-      id="taskName"
-      type="text"
-      v-model="taskName"
-      placeholder="Enter task name"
-      required
-    />
+    <input id="taskName" type="text" v-model="taskName" placeholder="Enter task name" required />
     <label for="taskDescription">Task Description:</label>
-    <input
-      id="taskDescription"
-      type="text"
-      v-model="taskDescription"
-      placeholder="Enter task description"
-      required
-    />
+    <input id="taskDescription" type="text" v-model="taskDescription" placeholder="Enter task description" required />
     <label for="reps">Num reps:</label>
-    <input
-      id="reps"
-      type="number"
-      v-model="reps"
-      placeholder="Enter number of reps"
-      required
-    />
+    <input id="reps" type="number" v-model="reps" placeholder="Enter number of reps" required />
     <label for="sets">Num sets:</label>
-    <input
-      id="sets"
-      type="number"
-      v-model="sets"
-      placeholder="Enter number of sets"
-      required
-    />
+    <input id="sets" type="number" v-model="sets" placeholder="Enter number of sets" required />
     <label for="startingWeight">Starting weight (lbs):</label>
-    <input
-      id="startingWeight"
-      type="number"
-      v-model="startingWeight"
-      placeholder="Enter starting weight"
-      required
-    />
+    <input id="startingWeight" type="number" v-model="startingWeight" placeholder="Enter starting weight" required />
     <button type="submit" class="create-task-button">Create Task</button>
   </form>
 </template>
 
 <style scoped>
 .create-task-form {
-  background-color: #f1efeb; /* Soft beige */
-  border: 2px solid #4e70a3; /* Deep blue */
+  background-color: var(--sbeige); /* Soft beige */
+  border: 2px solid var(--dblue); /* Deep blue */
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -89,57 +59,59 @@ const resetForm = () => {
 }
 
 label {
-  font-family: 'Arial';
+  font-family: "Arial";
   font-weight: bold;
   font-size: 18px;
-  color: #4e70a3;
+  color: var(--dblue);
   margin-bottom: 0.2em;
 }
 
 input {
-  font-family: 'Arial', sans-serif; /* Bold, sporty font */
+  font-family: "Arial", sans-serif; /* Bold, sporty font */
   font-size: 16px;
   padding: 0.8em;
-  border: 2px solid #cef5cb; /* Light green */
+  border: 2px solid var(--lgreen); /* Light green */
   border-radius: 8px;
   background-color: #fff;
   transition: box-shadow 0.3s;
 }
 
 input:focus {
-  box-shadow: 0 0 8px #cef5cb; /* Light green focus effect */
+  box-shadow: 0 0 8px var(--lgreen); /* Light green focus effect */
   outline: none;
 }
 
 .create-task-button {
-  background-color: #4e70a3; /* Deep blue */
-  color: #f1efeb; /* Soft beige text */
-  font-family: 'Arial', sans-serif; /* Sporty font */
+  background-color: var(--dblue); /* Deep blue */
+  color: var(--sbeige); /* Soft beige text */
+  font-family: "Arial", sans-serif; /* Sporty font */
   font-size: 18px;
   padding: 0.8em 1.2em;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
 }
 
 .create-task-button:hover {
-  background-color: #cbdcf5; /* Light blue */
+  background-color: var(--lblue); /* Light blue */
   transform: scale(1.05);
 }
 
 textarea {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 16px;
   padding: 0.8em;
-  border: 2px solid #cef5cb;
+  border: 2px solid var(--lgreen);
   border-radius: 8px;
   background-color: #fff;
   resize: none;
 }
 
 textarea:focus {
-  box-shadow: 0 0 8px #cef5cb;
+  box-shadow: 0 0 8px var(--lgreen);
   outline: none;
 }
 </style>
