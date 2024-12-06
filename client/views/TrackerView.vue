@@ -40,7 +40,7 @@ const refreshTasks = () => {
       
       
       <ResetTasksComponent />
-      <TrackingGraphComponent />
+      <TrackingGraphComponent class = "graph"/>
     </div>
   </div>
 </template>
@@ -62,7 +62,10 @@ h1 {
   display: flex;
   gap: 1em;
   justify-content: space-between;
+  width: 90%;
+  align-items: center;
 }
+
 
 .form-container,
 .task-list-container {
@@ -89,4 +92,6 @@ h1 {
   gap: 1em;
   margin-top: 1em;
 }
+
+
 </style>

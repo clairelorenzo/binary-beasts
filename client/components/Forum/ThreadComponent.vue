@@ -2,7 +2,7 @@
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
-import { defineProps, onBeforeMount, ref } from "vue";
+import { defineProps } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["post", "upvotes", "alreadyUpvoted"]);
@@ -151,7 +151,6 @@ menu {
 
 .thumbs-up-button {
   background-color: #9bc0f6;
-  border: 1.5px solid black;
   border-radius: 20px;
   padding: 8px 12px;
   font-size: 1.2em;

@@ -28,7 +28,7 @@ const emptyForm = () => {
   <form @submit.prevent="createPost(content, picture)">
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-    <textarea id="picture" v-model="picture" placeholder="Add a picture!" required> </textarea>
+    <textarea id="picture" v-model="picture" placeholder="Add a google drive link to your picture!" required> </textarea>
     <button type="submit" class="pure-button-primary pure-button">Create Post</button>
   </form>
 </template>

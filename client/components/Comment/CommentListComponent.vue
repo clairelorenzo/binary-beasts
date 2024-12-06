@@ -28,25 +28,23 @@ onBeforeMount(loadComments);
 
 <style scoped>
 .comments-section {
-  margin-top: 1em;
+  background-color: white;
+  align-items: left;
 }
 
 article {
-  background-color: #e8d3f7; /* Softer purple for comment backgrounds */
   border-radius: 4px;
-  padding: 0.5em; /* Padding for comments */
-  margin-bottom: 0.5em; /* Margin for spacing */
+  align-items: left;
 }
 
 /* Comment styling */
 .comment-container {
-  background-color: #f7f2fc; /* Lightest purple for comments */
-  padding: 0.4em 0.6em; /* Reduced padding for tighter spacing */
-  margin: 0.3em 0; /* Reduced margin between comments */
+  padding: 0.4em 0.6em; 
+  margin: 0.3em 0; 
   border-radius: 5px;
   font-size: 0.85em;
-  color: #3d1a52; /* Deep purple text color */
-  text-align: left; /* Left-aligned comments */
+  color: var(--dblue); 
+  text-align: left;
 }
 
 /* Heading styling */

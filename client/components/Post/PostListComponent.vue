@@ -168,7 +168,6 @@ button:hover {
 
 /* Comment styling */
 .comment-container {
-  background-color: #F7F2FC; /* Light lavender background */
   padding: 0.8em;
   margin: 0.5em 0;
   border-radius: 5px;
