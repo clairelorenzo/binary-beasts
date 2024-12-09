@@ -62,6 +62,14 @@ const defaultStyle = {
       </div>
       <ul>
         <li>
+          <RouterLink 
+            :to="{ name: 'Home' }" 
+            :class="{ underline: currentRouteName == 'Home' }" 
+            :style="currentRouteName === 'Home' ? activeStyle : defaultStyle"> 
+            Posts 
+          </RouterLink>    
+        </li>
+        <li>
           <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Threads </RouterLink>
         </li>
         <li style="color: var(--sbeige)">
