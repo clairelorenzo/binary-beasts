@@ -70,7 +70,7 @@ const defaultStyle = {
           </RouterLink>    
         </li>
         <li>
-          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Threads </RouterLink>
+          <RouterLink :to="{ name: 'Threads' }" :class="{ underline: currentRouteName == 'Threads' }" :style="currentRouteName === 'Threads' ? activeStyle : defaultStyle"> Forum </RouterLink>
         </li>
         <li style="color: var(--sbeige)">
           <RouterLink :to="{ name: 'Tracker' }" :class="{ underline: currentRouteName == 'Tracker' }" :style="currentRouteName === 'Tracker' ? activeStyle : defaultStyle"> Tracker </RouterLink>

@@ -1,6 +1,7 @@
 <template>
   <div class="message-input">
     <input
+      v-if="!isTask"
       type="text"
       v-model="content"
       @keydown.enter="onSend"
@@ -8,7 +9,7 @@
     />
 
     <!-- Task input fields -->
-    <div v-if="isTask" class="task-inputs">
+    <div v-else class="task-inputs">
       <input type="text" v-model="taskName" placeholder="Task Name" />
       <input type="text" v-model="taskDescription" placeholder="Description" />
       <input type="number" v-model="taskReps" placeholder="Reps" />
