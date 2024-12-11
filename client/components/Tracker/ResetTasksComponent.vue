@@ -4,6 +4,8 @@ import { fetchy } from "../../utils/fetchy";
 
 const isLoading = ref(false);
 const message = ref<string | null>(null);
+const emit = defineEmits(["refreshTasks"]);
+
 
 const resetTasks = async () => {
   isLoading.value = true;
@@ -11,6 +13,7 @@ const resetTasks = async () => {
     const response = await fetchy("/api/tracking/tasks/reset", "POST");
     if (response && response.msg) {
       message.value = response.msg;
+      emit("refreshTasks");
     } else {
       message.value = "An error occurred while resetting tasks.";
     }

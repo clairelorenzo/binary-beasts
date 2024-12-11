@@ -76,7 +76,7 @@ const refreshTasks = () => {
     </div>
 
     <div class="bottom-section">
-      <ResetTasksComponent />
+      <ResetTasksComponent @refreshTasks="refreshTasks"/>
       <TrackingGraphComponent class="graph" />
     </div>
   </div>
