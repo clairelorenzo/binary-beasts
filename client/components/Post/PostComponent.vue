@@ -9,6 +9,7 @@ const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername } = storeToRefs(useUserStore());
 const numUpvotes = ref<number>(0);
+const alreadyUpvoted = ref<boolean>(false);
 
 const deletePost = async () => {
   try {
@@ -28,17 +29,15 @@ async function getNumUpvotes() {
   }
 }
 
-// async function toggleUpvote() {
-//   if (props.alreadyUpvoted) {
-//     emit("updateUpvotes", props.upvotes - 1);
-//     emit("updateAlreadyUpvoted", !props.alreadyUpvoted);
-//     await removeUpvote();
-//   } else {
-//     emit("updateUpvotes", props.upvotes + 1);
-//     emit("updateAlreadyUpvoted", !props.alreadyUpvoted);
-//     await upvote();
-//   }
-// }
+async function toggleUpvote() {
+  if (alreadyUpvoted.value) {
+    alreadyUpvoted.value = !alreadyUpvoted.value;
+    numUpvotes.value -= 1;
+  } else {
+    alreadyUpvoted.value = !alreadyUpvoted.value;
+    numUpvotes.value += 1;
+  }
+}
 
 onBeforeMount(async () => {
   await getNumUpvotes();
@@ -54,7 +53,7 @@ onBeforeMount(async () => {
         <span v-if="numUpvotes === 1">upvote</span>
         <span v-else> upvotes</span>
       </span>
-      <button class="thumbs-up-button">👍</button>
+      <button class="thumbs-up-button" :class="{ upvoted: alreadyUpvoted }" @click="toggleUpvote">👍</button>
     </div>
   </div>
   <p>{{ props.post.content }}</p>

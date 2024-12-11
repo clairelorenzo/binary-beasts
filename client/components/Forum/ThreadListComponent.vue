@@ -83,14 +83,13 @@ onBeforeMount(async () => {
       <h2 v-else>Threads by {{ searchAuthor }}:</h2>
       <p class="guide">On the forum, feel free to ask questions, look for new workouts, meet new gym partners, and more! </p>
     </div>
-
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
   <section class="posts" v-if="loaded">
     <section class="postList">
       <button class="pure-button-primary pure-button" v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
       <article
-        v-for="post in posts"
+        v-for="post in posts.filter(post => post.picture === null)"
         :key="post._id"
         v-on:click="
           async () => {
@@ -178,6 +177,9 @@ article {
 }
 
 h2 {
+  color: var(--dblue);
+}
+h1 {
   color: var(--dblue);
 }
 </style>
