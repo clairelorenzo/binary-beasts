@@ -2,8 +2,8 @@
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
+import { onBeforeMount, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
-import { ref, onBeforeMount } from "vue";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
@@ -29,18 +29,48 @@ async function getNumUpvotes() {
   }
 }
 
+async function upvote() {
+  let query: Record<string, string> = { post: props.post._id };
+  try {
+    await fetchy(`/api/upvotes`, "POST", { query });
+  } catch (error) {
+    console.error("Error upvoting", error);
+  }
+}
+
+async function removeUpvote() {
+  let query: Record<string, string> = { post: props.post._id };
+  try {
+    await fetchy(`/api/upvotes`, "DELETE", { query });
+  } catch (error) {
+    console.error("Error removing upvote", error);
+  }
+}
+
 async function toggleUpvote() {
   if (alreadyUpvoted.value) {
     alreadyUpvoted.value = !alreadyUpvoted.value;
     numUpvotes.value -= 1;
+    await removeUpvote();
   } else {
     alreadyUpvoted.value = !alreadyUpvoted.value;
     numUpvotes.value += 1;
+    await upvote();
+  }
+}
+
+async function checkUserAlreadyUpvoted() {
+  let query: Record<string, string> = { post: props.post._id };
+  try {
+    alreadyUpvoted.value = await fetchy(`/api/upvotes/user`, "GET", { query });
+  } catch (error) {
+    console.error("Error checking if user already upvoted", error);
   }
 }
 
 onBeforeMount(async () => {
   await getNumUpvotes();
+  await checkUserAlreadyUpvoted();
 });
 </script>
 
