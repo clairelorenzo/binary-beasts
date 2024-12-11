@@ -29,7 +29,7 @@ const emptyForm = () => {
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Add a caption!" required> </textarea>
     <textarea id="picture" v-model="picture" placeholder="Add a google drive link to your picture!" required> </textarea>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+    <button type="submit" class="pure-button-primary pure-button">Publish</button>
   </form>
 </template>
 

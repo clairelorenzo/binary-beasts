@@ -41,7 +41,7 @@ onUpdated(async () => {
 </script>
 
 <template>
-  <H1>Wellness Points Leaderboard</H1>
+  <h1>Wellness Points Leaderboard</h1>
   <section>
     <h3 v-if="isLoggedIn" class="header">Current Points: {{ currentPoints }}</h3>
   </section>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
-import { useUserStore } from "../../stores/user";
+import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 // Enum for Difficulty
@@ -11,33 +9,30 @@ enum Difficulty {
   Easy = "Easy",
 }
 
-const { currentUsername } = storeToRefs(useUserStore());
+const emit = defineEmits(["refreshTasks"]);
 
-const tasks = ref<Array<Record<string, any>>>([]);
-const isLoading = ref(true);
+interface Task {
+  id: string;
+  name: string;
+  description: string;
+  reps: number;
+  sets: number;
+  weight: number;
+  completed: boolean;
+  previousDifficulty: string;
+}
+
+const props = defineProps<{
+  tasks: Task[];
+}>();
+
+const isLoading = ref(false);
 const error = ref("");
-
-const fetchTasks = async () => {
-  isLoading.value = true;
-  error.value = "";
-  try {
-    const response = await fetchy("/api/tracking/tasks/", "GET", {
-      query: { user: currentUsername.value },
-    });
-    tasks.value = response.tasks || [];
-  } catch (e) {
-    error.value = "No tasks yet";
-  } finally {
-    isLoading.value = false;
-  }
-};
 
 const deleteTask = async (taskName: string) => {
   try {
     const response = await fetchy(`/api/tracking/tasks/${taskName}`, "DELETE");
-    if (response.msg === "Task deleted successfully!") {
-      tasks.value = tasks.value?.filter((task) => task.name !== taskName);
-    }
+    emit("refreshTasks");
   } catch (e) {
     alert("Failed to delete task.");
   }
@@ -46,6 +41,7 @@ const deleteTask = async (taskName: string) => {
 const toggleTaskCompletion = async (task: Record<string, any>) => {
   try {
     const response = await fetchy(`/api/tracking/tasks/${task.name}/completed`, "POST", {});
+    emit("refreshTasks");
     if (response.msg === "Success") {
       task.completed = task.completed === "true" ? false : true;
     }
@@ -82,13 +78,7 @@ const modifyTask = async (taskName: string, reps: number, sets: number, weight: 
         difficulty,
       },
     });
-    if (response.msg === "Task updated successfully!") {
-      const updatedTask = response.task;
-      const index = tasks.value.findIndex((task) => task.name === taskName);
-      if (index !== -1) {
-        tasks.value[index] = updatedTask;
-      }
-    }
+    emit("refreshTasks");
   } catch (e) {
     console.error("Failed to modify task:", e);
     error.value = "Failed to modify task.";
@@ -105,11 +95,10 @@ const closeModifyForm = () => {
   showModifyForm.value = null;
 };
 
-onMounted(fetchTasks);
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <h2>Your Tasks This Week:</h2>
     <div v-if="isLoading">Loading tasks...</div>
     <div v-if="error" class="error">{{ error }}</div>
@@ -118,13 +107,11 @@ onMounted(fetchTasks);
         <div class="task-row">
           <div class="task-info">
             <h3 class="task-name">{{ task.name }}</h3>
-            
             <p class="task-description">{{ task.description }}</p>
-            
           </div>
           <input
             type="checkbox"
-            :checked="task.completed === true"
+            :checked="task.completed"
             @change="toggleTaskCompletion(task)"
             class="completion-checkbox"
           />
@@ -144,47 +131,54 @@ onMounted(fetchTasks);
             <button class="delete-task-button" @click="deleteTask(task.name)" aria-label="Delete task">🗑️</button>
             <button @click="promptChange(task.name, task.previousDifficulty)">Prompt Change</button>
             <button @click="openModifyForm(task)" style="background-color: #cef5cb">Modify Task</button>
-            
           </div>
-          
         </div>
       </li>
     </ul>
 
-    <div v-if="showModifyForm" class="modify-task-form">
-      <h3>Modify Task: {{ showModifyForm.name }}</h3>
-      <form @submit.prevent="modifyTask(showModifyForm.name, showModifyForm.reps, showModifyForm.sets, showModifyForm.weight, showModifyForm.difficulty)">
-        <div>
-          <label for="reps">Reps:</label>
-          <input v-model="showModifyForm.reps" type="number" id="reps" required />
-        </div>
-        <div>
-          <label for="sets">Sets:</label>
-          <input v-model="showModifyForm.sets" type="number" id="sets" required />
-        </div>
-        <div>
-          <label for="weight">Weight:</label>
-          <input v-model="showModifyForm.weight" type="number" id="weight" required />
-        </div>
-        <div>
-          <label for="difficulty">Difficulty:</label>
-          <select v-model="showModifyForm.difficulty" id="difficulty" required>
-            <option value="Difficult">Difficult</option>
-            <option value="JustRight">JustRight</option>
-            <option value="Easy">Easy</option>
-          </select>
-        </div>
-        <div class="button-container">
-          <button type="submit">Save Changes</button>
-          <button type="button" @click="closeModifyForm">Cancel</button>
-        </div>
-        
-      </form>
+    <!-- Modal for Modifying Task -->
+    <div v-if="showModifyForm" class="modal-overlay">
+      <div class="modal">
+        <h3>Modify Task: {{ showModifyForm.name }}</h3>
+        <form
+          @submit.prevent="modifyTask(showModifyForm.name, showModifyForm.reps, showModifyForm.sets, showModifyForm.weight, showModifyForm.difficulty)"
+        >
+          <div>
+            <label for="reps">Reps:</label>
+            <input v-model="showModifyForm.reps" type="number" id="reps" required />
+          </div>
+          <div>
+            <label for="sets">Sets:</label>
+            <input v-model="showModifyForm.sets" type="number" id="sets" required />
+          </div>
+          <div>
+            <label for="weight">Weight:</label>
+            <input v-model="showModifyForm.weight" type="number" id="weight" required />
+          </div>
+          <div>
+            <label for="difficulty">Difficulty:</label>
+            <select v-model="showModifyForm.difficulty" id="difficulty" required>
+              <option value="Difficult">Difficult</option>
+              <option value="JustRight">JustRight</option>
+              <option value="Easy">Easy</option>
+            </select>
+          </div>
+          <div class="button-container">
+            <button type="submit">Save Changes</button>
+            <button type="button" @click="closeModifyForm">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.container{
+  overflow-y: scroll;
+  height: 81vh;
+}
 h2 {
   color: var(--dblue);
 }
