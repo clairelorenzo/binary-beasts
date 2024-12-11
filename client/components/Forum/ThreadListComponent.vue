@@ -86,7 +86,7 @@ onBeforeMount(async () => {
     <section class="postList">
       <button class="pure-button-primary pure-button" v-if="isLoggedIn" v-on:click="creating = true">New Thread</button>
       <article
-        v-for="post in posts"
+        v-for="post in posts.filter(post => post.picture === null)"
         :key="post._id"
         v-on:click="
           async () => {

@@ -62,11 +62,13 @@ onBeforeMount(async () => {
     <SearchPostForm @getPostsByAuthor="getPosts" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
-    <article v-for="post in posts" :key="post._id">
+    <article v-for="post in posts.filter(post => post.picture !== null)" :key="post._id">
+      
       <PostComponent class="post-container" v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" showComments/>
       <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
       <CommentListComponent :postId="post._id" />
       <CreateCommentForm :postId="post._id" @refresh-comments="loadComments" />
+
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>
