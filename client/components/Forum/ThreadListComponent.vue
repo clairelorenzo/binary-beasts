@@ -78,7 +78,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <h2 v-if="!searchAuthor">Threads:</h2>
+    <h1 v-if="!searchAuthor">Threads:</h1>
     <h2 v-else>Threads by {{ searchAuthor }}:</h2>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
@@ -168,6 +168,9 @@ article {
 }
 
 h2 {
+  color: var(--dblue);
+}
+h1 {
   color: var(--dblue);
 }
 </style>
