@@ -16,6 +16,7 @@ const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 let searchAuthor = ref("");
+let showCreatePostForm = ref(false); // Toggle for form visibility
 
 async function getPosts(author?: string) {
   let query: Record<string, string> = author !== undefined ? { author } : {};
@@ -29,17 +30,16 @@ async function getPosts(author?: string) {
   posts.value = postResults;
 }
 
-const comments = ref<Array<Record<string,string>>>([]);
+const comments = ref<Array<Record<string, string>>>([]);
 
 async function loadComments(postId: string) {
   let commentResults;
   try {
-    commentResults = await fetchy("/api/comments/", "GET", {body: {postId:postId}});
+    commentResults = await fetchy("/api/comments/", "GET", { body: { postId: postId } });
   } catch (_) {
     return;
   }
   comments.value = commentResults;
-  
 }
 
 function updateEditing(id: string) {
@@ -54,14 +54,21 @@ onBeforeMount(async () => {
 
 <template>
   <section v-if="isLoggedIn">
-    <CreatePostForm @refreshPosts="getPosts" />
+    <button @click="showCreatePostForm = !showCreatePostForm">
+      {{ showCreatePostForm ? "Cancel" : "Create Post" }}
+    </button>
+    <CreatePostForm v-if="showCreatePostForm" @refreshPosts="getPosts" />
   </section>
   <div class="row">
-    <h2 v-if="!searchAuthor">Posts:</h2>
-    <h2 v-else>Posts by {{ searchAuthor }}:</h2>
+    <div>
+      <h2 v-if="!searchAuthor">Posts:</h2>
+      <h2 v-else>Posts by {{ searchAuthor }}:</h2>
+      <p class="guide">Share your photos from the gym to hold yourself accountable! Posts can be verified by other users with an upvote. </p>
+    </div>
     <SearchPostForm @getPostsByAuthor="getPosts" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
+
     <article v-for="post in posts.filter(post => post.picture !== null)" :key="post._id">
       
       <PostComponent class="post-container" v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" showComments/>
@@ -74,6 +81,7 @@ onBeforeMount(async () => {
   <p v-else-if="loaded">No posts found</p>
   <p v-else>Loading...</p>
 </template>
+
 
 <style scoped>
 section {
@@ -110,7 +118,6 @@ article {
 /* Header Section */
 h2 {
   color: #4E70A3; /* Dark blue for headers */
-  font-size: 3vw;
   font-weight: bold;
   margin-bottom: 1em;
 }
@@ -147,24 +154,29 @@ h2 {
   font-weight: bold;
 }
 
-/* Edit post form and create post form styling */
+.guide{
+  position: relative;
+  top: 1vh;
+  font-size: 14px;
+}s
+
 input, textarea, button {
   border-radius: 8px;
-  border: 1px solid #CBDCF5; /* Border to match the light blue theme */
+  border: 1px solid #CBDCF5; 
   padding: 0.8em;
   font-size: 1em;
   margin-bottom: 1em;
 }
 
 button {
-  background-color: #4E70A3; /* Blue button for actions */
-  color: #F1EFEB; /* Light text on button */
+  background-color: #4E70A3;
+  color: #F1EFEB; 
   font-weight: bold;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #3D1A52; /* Darker blue on hover */
+  background-color: #3D1A52; 
 }
 
 /* Comment styling */

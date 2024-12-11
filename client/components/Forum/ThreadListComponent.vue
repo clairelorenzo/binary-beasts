@@ -78,8 +78,11 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <h1 v-if="!searchAuthor">Threads:</h1>
-    <h2 v-else>Threads by {{ searchAuthor }}:</h2>
+    <div>
+      <h2 v-if="!searchAuthor">Threads:</h2>
+      <h2 v-else>Threads by {{ searchAuthor }}:</h2>
+      <p class="guide">On the forum, feel free to ask questions, look for new workouts, meet new gym partners, and more! </p>
+    </div>
     <SearchThreadForm @getPostsByAuthor="fullRefresh" />
   </div>
   <section class="posts" v-if="loaded">
@@ -147,6 +150,12 @@ article {
   flex-direction: row;
   justify-content: space-between;
   height: 70vh;
+}
+
+.guide{
+  position: relative;
+  top: 1vh;
+  font-size: 18px;
 }
 
 .postList {

@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useUserStore } from "../../stores/user";
-import { fetchy } from "../../utils/fetchy";
 
 const { currentUsername } = storeToRefs(useUserStore());
 
-const percentage = ref<number | null>(null);
-const isLoading = ref(true);
+const props = defineProps<{
+  percentage: number|null;
+}>();
+
+interface Task {
+  id: string;
+  name: string;
+  description: string;
+  reps: number;
+  sets: number;
+  weight: number;
+  completed: boolean;
+  previousDifficulty: string;
+}
+
+const isLoading = ref(false);
 const error = ref("");
 
-const fetchPercentage = async () => {
-  isLoading.value = true;
-  error.value = "";
-  try {
-    const response = await fetchy("/api/tracking/percentage", "GET");
-    percentage.value = response.percentage ?? 0;
-  } catch (e) {
-    error.value = "No tasks to calculate completion; add tasks first!";
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-onMounted(fetchPercentage);
 </script>
 
 <template>

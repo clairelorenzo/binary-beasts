@@ -55,6 +55,7 @@ const resetForm = () => {
   flex-direction: column;
   gap: 1em;
   padding: 1.5em;
+  height: 75vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
