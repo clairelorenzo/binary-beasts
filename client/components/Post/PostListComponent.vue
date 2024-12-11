@@ -63,25 +63,21 @@ onBeforeMount(async () => {
     <div>
       <h2 v-if="!searchAuthor">Posts:</h2>
       <h2 v-else>Posts by {{ searchAuthor }}:</h2>
-      <p class="guide">Share your photos from the gym to hold yourself accountable! Posts can be verified by other users with an upvote. </p>
+      <p class="guide">Share your photos from the gym to hold yourself accountable! Posts can be verified by other users with an upvote.</p>
     </div>
     <SearchPostForm @getPostsByAuthor="getPosts" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
-
-    <article v-for="post in posts.filter(post => post.picture !== null)" :key="post._id">
-      
-      <PostComponent class="post-container" v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" showComments/>
+    <article v-for="post in posts.filter((post) => post.picture !== null)" :key="post._id">
+      <PostComponent class="post-container" v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" showComments />
       <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
       <CommentListComponent :postId="post._id" />
       <CreateCommentForm :postId="post._id" @refresh-comments="loadComments" />
-
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>
   <p v-else>Loading...</p>
 </template>
-
 
 <style scoped>
 section {
@@ -117,7 +113,7 @@ article {
 
 /* Header Section */
 h2 {
-  color: #4E70A3; /* Dark blue for headers */
+  color: #4e70a3; /* Dark blue for headers */
   font-weight: bold;
   margin-bottom: 1em;
 }
@@ -132,20 +128,20 @@ h2 {
 
 /* Post styling */
 .post-container {
-  background-color: #CBDCF5; /* Soft blue background for posts */
+  background-color: #cbdcf5; /* Soft blue background for posts */
   padding: 1.2em;
   margin: 0.8em 0;
   border-radius: 8px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.08);
   font-size: 1em;
-  color: #3D1A52; /* Deep purple text for contrast */
+  color: #3d1a52; /* Deep purple text for contrast */
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
 .post-container:hover {
-  background-color: #4E70A3; /* Hover effect to a deeper blue */
-  color: #F1EFEB; /* Change text color on hover */
+  background-color: #4e70a3; /* Hover effect to a deeper blue */
+  color: #f1efeb; /* Change text color on hover */
 }
 
 .post-container .post-title {
@@ -154,29 +150,30 @@ h2 {
   font-weight: bold;
 }
 
-.guide{
+.guide {
   position: relative;
   top: 1vh;
   font-size: 14px;
-}s
-
-input, textarea, button {
+}
+s input,
+textarea,
+button {
   border-radius: 8px;
-  border: 1px solid #CBDCF5; 
+  border: 1px solid #cbdcf5;
   padding: 0.8em;
   font-size: 1em;
   margin-bottom: 1em;
 }
 
 button {
-  background-color: #4E70A3;
-  color: #F1EFEB; 
+  background-color: #4e70a3;
+  color: #f1efeb;
   font-weight: bold;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #3D1A52; 
+  background-color: #3d1a52;
 }
 
 /* Comment styling */
@@ -185,19 +182,19 @@ button:hover {
   margin: 0.5em 0;
   border-radius: 5px;
   font-size: 0.9em;
-  color: #3D1A52; /* Matching deep purple text */
+  color: #3d1a52; /* Matching deep purple text */
   transition: background-color 0.3s ease;
 }
 
 .comment-container:hover {
-  background-color: #CBDCF5; /* Soft blue hover effect */
+  background-color: #cbdcf5; /* Soft blue hover effect */
 }
 
 /* Search bar styling */
 input[type="text"] {
   padding: 1em;
   border-radius: 8px;
-  border: 1px solid #CBDCF5;
+  border: 1px solid #cbdcf5;
   font-size: 1em;
   margin-top: 1em;
   width: 100%;
@@ -206,7 +203,7 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border-color: #4E70A3; /* Focus effect for the search bar */
+  border-color: #4e70a3; /* Focus effect for the search bar */
 }
 
 /* Adjustments for mobile responsiveness */
@@ -220,5 +217,4 @@ input[type="text"]:focus {
     padding: 1em;
   }
 }
-
 </style>
