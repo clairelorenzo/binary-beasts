@@ -130,7 +130,7 @@ const onSend = () => {
 }
 
 .button-group button:first-child {
-  background-color: #c4c1c1;
+  background-color: var(--dblue);
   color: white;
 }
 
